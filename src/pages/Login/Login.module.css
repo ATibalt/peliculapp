@@ -1,0 +1,17 @@
+.loginMain {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  color: white;
+}
+
+.loginHeader__title {
+  margin-top: 40px;
+}
+
+.loginToggler {
+  margin-bottom: 25px;
+}
