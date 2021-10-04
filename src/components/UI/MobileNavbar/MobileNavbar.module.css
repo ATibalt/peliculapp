@@ -1,0 +1,32 @@
+.mobileHeader {
+  padding: 1rem 1rem 1.3rem 1rem;
+  background: rgb(0,0,0);
+  background: linear-gradient(180deg, rgba(0,0,0,.5) 0%, rgba(255,255,255,0) 100%);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  color: #E50914;
+  font-size: 1.8rem;
+  font-weight: bolder;
+  line-height: 1;
+}
+
+.mobileNavbar{
+ position: fixed;
+ bottom: 0;
+ left: 0;
+ width: 100%;
+ display: flex;
+ flex-direction: row;
+}
+.mobileNavbar_navlink {
+  width: calc(100% / 6);
+  background: black;
+  color: rgb(126, 126, 126);
+  height: 60px;
+  display: grid;
+  place-items: center;
+}
+.mobileNavbar_navlink--active{
+  color: white;
+}
