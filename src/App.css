@@ -1,6 +1,11 @@
 .App {
-  background-color: grey;
-  width: 100vw;
+  background-color: black;
   min-height: 100vh;
-  overflow-x: hidden;
+  margin-bottom: 60px;
+}
+
+@media only screen and (min-width: 768px) {
+  .App {
+    margin-bottom: 0;
+  }
 }

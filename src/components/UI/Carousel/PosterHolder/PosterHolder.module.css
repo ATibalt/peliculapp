@@ -1,0 +1,64 @@
+.contentCarousel__poster {
+  flex-shrink: 0;
+  display: flex;
+  width: min(45vw,200px);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  padding: 0;
+}
+.contentCarousel__poster--isLoading {
+  height: 300px;
+  background: linear-gradient(307deg, #898989, #343434);
+  background-size: 400% 400%;
+
+  -webkit-animation: AnimationName 30s ease infinite;
+  -moz-animation: AnimationName 30s ease infinite;
+  animation: AnimationName 30s ease infinite;
+}
+.contentCarousel__poster > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%)translateY(-50%);
+  color: white;
+  font-size: 1.3rem;
+  font-weight: bold;
+  opacity: 0;
+  transition: all .3s;
+  text-align: center;
+}
+.contentCarousel__poster:hover {
+  cursor: pointer;
+}
+
+.contentCarousel__poster:hover > span {
+  opacity: 1;
+}
+
+.contentCarousel__poster > img {
+  transition: all .3s;
+  max-width: 100%;
+  transform: scale(1);
+}
+.contentCarousel__poster:hover > img {
+  filter: brightness(.4);
+  transform: scale(1.3);
+}
+
+@-webkit-keyframes AnimationName {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@-moz-keyframes AnimationName {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@keyframes AnimationName {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}

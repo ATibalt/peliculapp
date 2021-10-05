@@ -9,6 +9,7 @@ import './App.css';
 // import Navbar from './components/UI/Navbar/Navbar';
 import MobileNavbar from './components/UI/MobileNavbar/MobileNavbar';
 import Navbar from './components/UI/Navbar/Navbar';
+import Home from './pages/Home/Home';
 
 function App() {
   const isLogedIn = useSelector((state) => state.auth.isLogedIn);
@@ -57,16 +58,7 @@ function App() {
           {isLogedIn ? <Redirect to="/" /> : <Login />}
         </Route>
         <Route path="/home">
-          {isLogedIn ? (
-            <>
-              <h1>Welcome</h1>
-              <button type="button" onClick={logoutHandler}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <Redirect to="/login" />
-          )}
+          {isLogedIn ? <Home /> : <Redirect to="/login" />}
         </Route>
         <Route path="/">
           {isLogedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
