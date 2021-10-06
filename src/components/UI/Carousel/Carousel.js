@@ -66,11 +66,7 @@ const Carousel = (props) => {
           }}
         >
           {content.map((item) => (
-            <PosterHolder
-              key={item.id}
-              item={item}
-              currentWindowWidth={currentWindowWidth}
-            />
+            <PosterHolder key={item.id} item={item} />
           ))}
         </div>
       </div>

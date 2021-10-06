@@ -8,20 +8,30 @@ const PosterHolder = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState(true);
   // eslint-disable-next-line no-unused-vars
-  const { item, currentWindowWidth } = props;
-  // eslint-disable-next-line no-unused-vars
-  const type = item.title ? 'movie' : 'tv';
-  const title = item.title ? item.title : item.name;
+  const { item, isSearch } = props;
+
+  let type;
+  let title;
+  let posterPath;
+  if (isSearch) {
+    type = item.media_type;
+    title = item.title ? item.title : item.name;
+    posterPath = type === 'person' ? item.profile_path : item.poster_path;
+  } else {
+    type = item.title ? 'movie' : 'tv';
+    title = item.title ? item.title : item.name;
+    posterPath = item.poster_path;
+  }
 
   return (
     <Link
       to={`/${type}/${item.id}`}
       className={`${styles.contentCarousel__poster} ${
         isLoading && styles['contentCarousel__poster--isLoading']
-      }`}
+      } ${isLoading && styles['contentCarousel__poster--noimg']}`}
     >
       <img
-        src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+        src={`https://image.tmdb.org/t/p/w500/${posterPath}`}
         alt=""
         onLoad={() => {
           setIsLoading(false);
@@ -34,12 +44,12 @@ const PosterHolder = (props) => {
 
 PosterHolder.propTypes = {
   item: PropTypes.instanceOf(PropTypes.object),
-  currentWindowWidth: PropTypes.number
+  isSearch: PropTypes.bool
 };
 
 PosterHolder.defaultProps = {
   item: {},
-  currentWindowWidth: PropTypes.number
+  isSearch: false
 };
 
 export default PosterHolder;

@@ -10,6 +10,7 @@ import './App.css';
 import MobileNavbar from './components/UI/MobileNavbar/MobileNavbar';
 import Navbar from './components/UI/Navbar/Navbar';
 import Home from './pages/Home/Home';
+import Search from './pages/Search/Search';
 
 function App() {
   const isLogedIn = useSelector((state) => state.auth.isLogedIn);
@@ -59,6 +60,9 @@ function App() {
         </Route>
         <Route path="/home">
           {isLogedIn ? <Home /> : <Redirect to="/login" />}
+        </Route>
+        <Route path="/search">
+          {isLogedIn ? <Search /> : <Redirect to="/login" />}
         </Route>
         <Route path="/">
           {isLogedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}

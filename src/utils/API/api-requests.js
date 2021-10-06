@@ -54,3 +54,12 @@ export const fetchTopRatedTv = async () => {
 
   return data;
 };
+
+export const fetchMultiSearch = async (searchValue, pageValue) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=${LANGUAGE_ES}&query=${searchValue}&page=${pageValue}&include_adult=false`
+  );
+  const data = await response.json();
+
+  return data;
+};

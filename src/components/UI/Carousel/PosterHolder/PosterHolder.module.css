@@ -1,7 +1,9 @@
 .contentCarousel__poster {
   flex-shrink: 0;
   display: flex;
+  justify-content: center;
   width: min(45vw,200px);
+  max-height: 300px;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -31,6 +33,10 @@
 }
 .contentCarousel__poster:hover {
   cursor: pointer;
+}
+
+.contentCarousel__poster--noimg > span {
+  opacity: 1;
 }
 
 .contentCarousel__poster:hover > span {
