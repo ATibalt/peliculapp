@@ -3,22 +3,16 @@ import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Login from './pages/Login/Login';
 import { logout, setUserData } from './store/slices/Login/authSlice';
-import useMediaQuery from './hooks/useMediaQuery';
 
 import './App.css';
 // import Navbar from './components/UI/Navbar/Navbar';
-import MobileNavbar from './components/UI/MobileNavbar/MobileNavbar';
-import Navbar from './components/UI/Navbar/Navbar';
-import Home from './pages/Home/Home';
-import Search from './pages/Search/Search';
+
+import Main from './pages/Main';
 
 function App() {
   const isLogedIn = useSelector((state) => state.auth.isLogedIn);
   const authDispatch = useDispatch();
   const history = useHistory();
-
-  const currentWindowWidth = useMediaQuery();
-  const navbar = currentWindowWidth < 768 ? <MobileNavbar /> : <Navbar />;
 
   const logoutHandler = useCallback(() => {
     localStorage.removeItem('token');
@@ -50,22 +44,15 @@ function App() {
 
   return (
     <div className="App">
-      {isLogedIn && navbar}
       <Switch>
-        <Route path="/login">
+        <Route exact path="/login">
           {isLogedIn ? <Redirect to="/" /> : <Login isLogin />}
         </Route>
-        <Route path="/sign-up">
+        <Route exact path="/sign-up">
           {isLogedIn ? <Redirect to="/" /> : <Login />}
         </Route>
-        <Route path="/home">
-          {isLogedIn ? <Home /> : <Redirect to="/login" />}
-        </Route>
-        <Route path="/search">
-          {isLogedIn ? <Search /> : <Redirect to="/login" />}
-        </Route>
         <Route path="/">
-          {isLogedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
+          <Main isLogedIn={isLogedIn} />
         </Route>
       </Switch>
     </div>

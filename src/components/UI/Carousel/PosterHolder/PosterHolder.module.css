@@ -2,7 +2,7 @@
   flex-shrink: 0;
   display: flex;
   justify-content: center;
-  width: min(45vw,200px);
+  width: min(47.5%,200px);
   max-height: 300px;
   border-radius: 4px;
   overflow: hidden;
@@ -10,8 +10,12 @@
   border: none;
   padding: 0;
 }
+.contentCarousel__poster.contentCarousel__profile{
+  height: auto;
+}
 .contentCarousel__poster--isLoading {
-  height: 300px;
+  height: 250px;
+  max-height: 300px;
   background: linear-gradient(307deg, #898989, #343434);
   background-size: 400% 400%;
 

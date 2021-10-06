@@ -11,7 +11,9 @@ const Login = (props) => {
   return (
     <main className={styles.loginMain}>
       <header className={styles.loginHeader}>
-        <h1 className={styles.loginHeader__title}>PeliculApp</h1>
+        <Link to="/">
+          <h1 className={styles.loginHeader__title}>PeliculApp</h1>
+        </Link>
       </header>
       <LoginForm isLogin={isLogin} />
       {!isLogin ? (

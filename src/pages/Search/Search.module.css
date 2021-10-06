@@ -1,5 +1,5 @@
 .search {
-  padding: 10vh 2rem 0 2rem;
+  padding: clamp(75px,10vh,100px) 2rem 0 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,7 +1,7 @@
 .App {
   background-color: black;
   min-height: 100vh;
-  margin-bottom: 60px;
+  padding-bottom: 60px;
   max-width: 100%;
   overflow-x: hidden;
 }

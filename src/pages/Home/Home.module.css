@@ -12,6 +12,7 @@
 .homeHero > img {
   position: absolute;
   min-width: 100%;
+  height: 100%;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -71,5 +72,11 @@
 @keyframes animatedBorder {
   0%{width: 0}
   100%{width: 100%}
+}
+
+@media only screen and (min-width: 1024px) {
+  .homeHero > img {
+    height: auto;
+  }
 }
 

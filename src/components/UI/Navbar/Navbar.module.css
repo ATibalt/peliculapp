@@ -24,7 +24,7 @@
   text-decoration: none;
   margin-left: 15px;
 }
-.navbar_navlink:last-child{
+.navbar_navlink.navbar_navlink--last, .navbar_loginLinks{
   margin-left: auto;
 }
 .navbar_navlink--active {
