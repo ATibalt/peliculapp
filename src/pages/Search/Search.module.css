@@ -1,0 +1,110 @@
+.search {
+  padding: 10vh 2rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.search__searchGroup {
+  width: 100%;
+  max-width: 100%;
+}
+.search__searchBar {
+  min-height: 48px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.search__searchInput {
+  width: 100%;
+  height: 100%;
+  padding: 10px 10px;
+  color: rgb(249, 249, 249);
+  font-size: 15px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1.53;
+  background-color: rgb(49, 52, 62);
+  border: none;
+  border-radius: 5px;
+}
+.search__searchInput:focus-visible {
+  outline: none;
+  border: 1px solid rgba(249, 249, 249, .3);
+}
+
+.search__searchFilters {
+  width: 100%;
+  color: rgb(249, 249, 249);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.search__filtersTitle {
+  padding: .7rem;
+  background-color: rgb(49, 52, 62);
+  font-weight: bold;
+}
+.search__filtersClass {
+  width: 100%;
+  padding: .7rem;
+  color: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgb(34, 37, 44);
+  border: none;
+  transition: all .2s;
+}
+.search__filtersClass > * {
+  pointer-events: none;
+}
+.search__filtersClass:hover, .search__filtersClass--active{
+  cursor: pointer;
+  background-color: rgb(64, 68, 82);
+}
+.search__filtersClass .search__countBadge {
+  margin-left: auto;
+  right: .7rem;
+  padding: 5px;
+  border-radius: 4px;
+  background-color: rgb(64, 68, 82);
+}
+.search__filtersClass:hover .search__countBadge, .search__filtersClass--active .search__countBadge{
+  background-color: rgb(92, 97, 117);
+}
+
+.search__searchResults {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+  column-gap: min(5%, 20px);
+  row-gap: 20px;
+  margin-bottom: 20px;
+}
+
+.search__searchResults .search__poster {
+  width: min(47.5%,200px);
+  height: 300px;
+  background-color: gray;
+}
+
+.search__notFoundMsg {
+  color: grey;
+  width: 100%;
+  text-align: center;
+}
+
+@media only screen and (min-width: 1024px) {
+  .search{
+    flex-direction: row;
+    column-gap: 20px;
+    align-items: flex-start;
+  }
+  .search__searchGroup {
+    width: 400px;
+    max-width: 400px;
+    flex-shrink: 0;
+  }
+}
