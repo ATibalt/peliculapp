@@ -31,26 +31,40 @@ const Home = () => {
     const theatresMovs = await fetchOnTheatresMovies();
     const upcoming = await fetchUpcomingMovies();
 
-    const topImg = [
-      popMovies.results[0].backdrop_path,
-      popTv.results[0].backdrop_path
-    ];
-    const topTitle = [popMovies.results[0].title, popTv.results[0].name];
-    setTopContent((prevState) => ({
-      ...prevState,
-      img: topImg,
-      title: topTitle
-    }));
-    setPopularMovies([...popMovies.results]);
-    setPopularTv([...popTv.results]);
-    setOnTheatres([...theatresMovs.results]);
-    setUpcomingMovies([...upcoming.results]);
+    const result = {
+      popMovies: [...popMovies.results],
+      popTv: [...popTv.results],
+      theatresMovs: [...theatresMovs.results],
+      upcoming: [...upcoming.results]
+    };
+
+    return result;
   }, []);
 
   useEffect(() => {
-    getPopularMovies().then(() => {
-      setMoviesLoading(false);
+    let isSubscribed = true;
+    getPopularMovies().then((results) => {
+      if (isSubscribed) {
+        const topImg = [
+          results.popMovies[0].backdrop_path,
+          results.popTv[0].backdrop_path
+        ];
+        const topTitle = [results.popMovies[0].title, results.popTv[0].name];
+        setTopContent((prevState) => ({
+          ...prevState,
+          img: topImg,
+          title: topTitle
+        }));
+        setPopularMovies([...results.popMovies]);
+        setPopularTv([...results.popTv]);
+        setOnTheatres([...results.theatresMovs]);
+        setUpcomingMovies([...results.upcoming]);
+        setMoviesLoading(false);
+      }
     });
+    return () => {
+      isSubscribed = false;
+    };
   }, [getPopularMovies]);
 
   useEffect(() => {

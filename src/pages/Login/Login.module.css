@@ -8,6 +8,14 @@
   color: white;
 }
 
+.loginHeader > a {
+  text-decoration: none;
+}
+
+.loginHeader > a:visited {
+  color: white;
+}
+
 .loginHeader__title {
   margin-top: 40px;
 }
