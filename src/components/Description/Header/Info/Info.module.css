@@ -1,0 +1,90 @@
+.header__contentTitle {
+  color: white;
+  height: min(40vw*1.6, 300px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-grow: 1;
+  position: relative;
+}
+
+.header__info .header__contentTitle > * {
+  margin-top: 10px;
+}
+
+.header__contentTitle > span:first-child {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.header__contentTitle .header__data {
+  color: #898989;
+}
+
+.actions {
+  position: relative;
+  z-index: 1;
+  color: white;
+  margin-top: 20px !important;
+  height: 40px;
+  min-height: 40px;
+  display: flex;
+  column-gap: 1.3rem;
+
+}
+.actions__watchTrailer{
+  height: 100%;
+  width: min(40vw, 200px);
+  background-color: red;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:white;
+  text-decoration: none;
+}
+.actions__watchTrailer:visited {
+  color: white;
+}
+.actions__watchTrailer> span {
+  margin-left: 10px;
+}
+
+.actions__watchTrailer--disabled {
+  background-color: grey;
+  pointer-events: none;
+}
+
+.actions .actions__add {
+  height: 100%;
+  width: min(40vw, 200px);
+  display: flex;
+  column-gap: 1.3rem;
+}
+.actions__add .actions__button {
+  width: 40px;
+  font-size: 1rem;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.actions__add .actions__button--active {
+  color: black;
+  background-color: white;
+}
+
+@media only screen and (max-width: 768px) {
+  .header__info .header__contentTitle {
+    position: relative;
+  }
+  .actions {
+    position: absolute;
+    width: calc(100vw - 2.6rem);
+    transform: translateY(calc(100% + 20px));
+    margin-top: 0;
+    bottom: 0;
+    right: 0;
+  }
+}

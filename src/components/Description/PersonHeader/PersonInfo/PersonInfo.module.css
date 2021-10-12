@@ -1,0 +1,37 @@
+.person__info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  row-gap: 5px;
+}
+
+.person__dataPair {
+  display: flex;
+  flex-direction: column;
+}
+.person__dataPair > span {
+  font-size: .9rem;
+}
+.person__dataPair > span:first-child {
+  font-weight: bold;
+}
+.person__dataPair > span:last-child {
+  color: #898989;
+}
+
+.person__socialnetworks {
+  font-size: 2rem;
+  display: flex;
+  column-gap: 10px;
+  color: #898989;
+  transition: all .2s;
+}
+.person__socialnetworks > a {
+  color: #898989;
+}
+.person__socialnetworks > a:visited{
+  color: #898989;
+}
+.person__socialnetworks > a:hover {
+  color: white;
+}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PosterHolder from '../../components/UI/Carousel/PosterHolder/PosterHolder';
 import { fetchMultiSearch } from '../../utils/API/api-requests';
-// import PropTypes from 'prop-types'
 
 import styles from './Search.module.css';
 

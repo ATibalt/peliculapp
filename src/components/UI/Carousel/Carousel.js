@@ -8,23 +8,49 @@ import {
 import useMediaQuery from '../../../hooks/useMediaQuery';
 import styles from './Carousel.module.css';
 import PosterHolder from './PosterHolder/PosterHolder';
+import ProfileHolder from './ProfileHolder/ProfileHolder';
 
 const Carousel = (props) => {
-  const { content, title } = props;
+  const { content, title, isPerson } = props;
   const [currentPage, setCurrentPage] = useState(0);
+  const [maxPages, setMaxPages] = useState(0);
   const currentWindowWidth = useMediaQuery();
-  const showButtons = !(currentWindowWidth < 768);
-  const numPerPage = Math.floor(currentWindowWidth / 215);
-  const maxPages =
-    numPerPage === 10
-      ? 1
-      : Math.round(content.length / (currentWindowWidth / 215));
+  const pictureWidth = isPerson ? 165 : 215;
+  let pictures;
+
+  if (isPerson) {
+    const firstTen = content.length > 10 ? content.slice(0, 10) : [...content];
+    pictures = firstTen.map((item) => (
+      <ProfileHolder key={item.credit_id} item={item} />
+    ));
+  } else {
+    pictures = content.map((item) => (
+      <PosterHolder key={item.id} item={item} />
+    ));
+  }
+
+  const numPerPage = Math.floor(currentWindowWidth / pictureWidth);
+
+  const showButtons = currentWindowWidth > 768 && maxPages > 0;
 
   useEffect(() => {
-    if (numPerPage === 10) {
+    if (isPerson) {
+      setMaxPages(
+        numPerPage > 9
+          ? 0
+          : Math.floor(pictures.length / (currentWindowWidth / pictureWidth))
+      );
+    } else {
+      setMaxPages(
+        numPerPage > 9
+          ? 1
+          : Math.floor(pictures.length / (currentWindowWidth / pictureWidth))
+      );
+    }
+    if (numPerPage > 9) {
       setCurrentPage(0);
     }
-  }, [numPerPage]);
+  }, [numPerPage, pictures.length, currentWindowWidth, pictureWidth, isPerson]);
 
   const leftArrowClickHandler = () => {
     if (currentPage > 0) {
@@ -41,7 +67,7 @@ const Carousel = (props) => {
     <div className={styles.contentCarousel}>
       <span>{title}</span>
       <div className={styles.contentCarousel__slider}>
-        {showButtons && (
+        {showButtons && currentPage !== 0 && (
           <button
             type="button"
             className={`${styles.contentCarousel__arrow} ${styles.contentCarousel__arrowLeft}`}
@@ -50,7 +76,7 @@ const Carousel = (props) => {
             <FontAwesomeIcon icon={faChevronLeft} />
           </button>
         )}
-        {showButtons && (
+        {showButtons && currentPage !== maxPages && (
           <button
             type="button"
             className={`${styles.contentCarousel__arrow} ${styles.contentCarousel__arrowRight}`}
@@ -62,12 +88,12 @@ const Carousel = (props) => {
         <div
           className={styles.contentCarousel__sliderMovies}
           style={{
-            transform: `translateX(-${currentPage * (numPerPage * 215)}px`
+            transform: `translateX(-${
+              currentPage * (numPerPage * pictureWidth)
+            }px`
           }}
         >
-          {content.map((item) => (
-            <PosterHolder key={item.id} item={item} />
-          ))}
+          {pictures}
         </div>
       </div>
     </div>
@@ -76,12 +102,14 @@ const Carousel = (props) => {
 
 Carousel.propTypes = {
   title: PropTypes.string,
-  content: PropTypes.arrayOf(PropTypes.object)
+  content: PropTypes.arrayOf(PropTypes.object),
+  isPerson: PropTypes.bool
 };
 
 Carousel.defaultProps = {
   title: 'Titulo',
-  content: []
+  content: [],
+  isPerson: false
 };
 
 export default Carousel;

@@ -1,0 +1,29 @@
+.description__profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.description__profile .description__profileHolder {
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(307deg, #898989, #343434);
+  background-size: 400% 400%;
+}
+.description__profileHolder img {
+  min-height: 100%;
+  max-width: 100%;
+}
+.description__profile > span {
+  font-size: .8rem;
+  margin-top: 5px;
+  max-width: 165px;
+  text-align: center;
+}
+.description__profile > span:last-child {
+  color: #898989;
+}
