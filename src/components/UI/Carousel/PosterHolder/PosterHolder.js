@@ -44,7 +44,7 @@ const PosterHolder = (props) => {
 };
 
 PosterHolder.propTypes = {
-  item: PropTypes.instanceOf(PropTypes.object),
+  item: PropTypes.objectOf(PropTypes.any),
   isSearch: PropTypes.bool
 };
 

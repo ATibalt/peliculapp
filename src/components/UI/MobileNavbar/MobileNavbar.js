@@ -13,14 +13,14 @@ import PropTypes from 'prop-types';
 import styles from './MobileNavbar.module.css';
 
 const MobileNavbar = (props) => {
-  const title = 'PeliculApp';
+  // const title = 'PeliculApp';
   const { isLogedIn } = props;
 
   const userLinkRoute = isLogedIn ? '/user' : '/login';
 
   return (
     <>
-      <header className={styles.mobileHeader}>{title}</header>
+      {/* <header className={styles.mobileHeader}>{title}</header> */}
       <nav className={styles.mobileNavbar}>
         <NavLink
           className={styles.mobileNavbar_navlink}

@@ -1,0 +1,81 @@
+.description__overviewCont {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.description__overview {
+  padding: 0 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.description__overview > .description__overviewText {
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: .9rem;
+  overflow: hidden;
+  max-width: 500px;
+  flex-shrink: 0;
+}
+.description__overviewText.description__overviewText--hide {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.description__overviewMoreBtn {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 4px;
+  transition: all .5s;
+}
+.description__overviewMoreBtn:hover {
+  background-color: red;
+  color: black;
+}
+
+.description__crew {
+  padding: 0 1.3rem;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  column-gap: 1.3rem;
+}
+.description__rolename {
+  display: flex;
+}
+.description__rolename > span:first-child {
+  min-width: 120px;
+  color: #898989;
+}
+.description__roles, .description__names {
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  color: #898989;
+}
+
+.description__names{
+  color: white;
+}
+
+@media only screen and (min-width: 768px) {
+  .description__overviewCont {
+    flex-direction: row;
+    column-gap: 1.3rem;
+    margin-top: 20px;
+  }
+  .description__overview {
+    align-items: flex-start;
+  }
+  .description__overview > .description__overviewText {
+    min-width: 500px;
+  }
+}

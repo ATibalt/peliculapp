@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   color: white;
-  padding: 15px;
+  padding: 15px 1.3rem;
+  position: relative;
 }
 .contentCarousel > span {
   margin-bottom: 10px;
@@ -53,5 +54,6 @@
   }
   .contentCarousel .contentCarousel__sliderMovies {
     width: max-content;
+    overflow-x: hidden;
   }
 }
