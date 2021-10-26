@@ -34,12 +34,16 @@ const Header = (props) => {
   switch (type) {
     case 'movie': {
       title = data.title;
-      const ratingData = data.release_dates.results.filter(
-        (item) => item.iso_3166_1 === 'US'
-      );
-      rating = ratingData[0]
-        ? ratingData[0].release_dates[0].certification
-        : data.release_dates.results[0].certification;
+      if (data.release_dates.results.length > 0) {
+        const ratingData = data.release_dates.results.filter(
+          (item) => item.iso_3166_1 === 'US'
+        );
+        rating = ratingData[0]
+          ? ratingData[0].release_dates[0].certification
+          : data.release_dates.results[0].certification;
+      } else {
+        rating = '';
+      }
       release = data.release_date.split('-');
       runtime =
         data.runtime > 60 ? convertMinToHr(data.runtime) : `${data.runtime} m`;
@@ -50,12 +54,16 @@ const Header = (props) => {
     }
     case 'tv': {
       title = data.name;
-      const ratingData = data.content_ratings.results.filter(
-        (item) => item.iso_3166_1 === 'US'
-      );
-      rating = ratingData[0]
-        ? ratingData[0].rating
-        : data.content_ratings.results[0].rating;
+      if (data.content_ratings.results.length > 0) {
+        const ratingData = data.content_ratings.results.filter(
+          (item) => item.iso_3166_1 === 'US'
+        );
+        rating = ratingData[0]
+          ? ratingData[0].rating
+          : data.content_ratings.results[0].rating;
+      } else {
+        rating = '';
+      }
       release = data.first_air_date.split('-');
       runtime =
         data.episode_run_time[0] > 60
@@ -96,6 +104,8 @@ const Header = (props) => {
           />
         </div>
         <Info
+          id={data.id}
+          type={type}
           title={title}
           release={release[0]}
           rating={rating}

@@ -64,6 +64,24 @@ export const fetchMultiSearch = async (searchValue, pageValue) => {
   return data;
 };
 
+export const fetchSimpleMovieData = async (id) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=${LANGUAGE_ES}`
+  );
+  const data = await response.json();
+
+  return data;
+};
+
+export const fetchSimpleTvData = async (id) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=${LANGUAGE_ES}`
+  );
+  const data = await response.json();
+
+  return data;
+};
+
 export const fetchMovieData = async (id) => {
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=${LANGUAGE_ES}&append_to_response=release_dates,credits,videos,recommendations,similar`
@@ -85,6 +103,24 @@ export const fetchTvData = async (id) => {
 export const fetchPersonData = async (id) => {
   const response = await fetch(
     `https://api.themoviedb.org/3/person/${id}?api_key=${API_KEY}&language=${LANGUAGE_ES}&append_to_response=combined_credits,external_ids`
+  );
+  const data = await response.json();
+
+  return data;
+};
+
+export const fetchMovieGenresList = async () => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=${LANGUAGE_ES}`
+  );
+  const data = await response.json();
+
+  return data;
+};
+
+export const fetchTvGenresList = async () => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/genre/tv/list?api_key=${API_KEY}&language=${LANGUAGE_ES}`
   );
   const data = await response.json();
 

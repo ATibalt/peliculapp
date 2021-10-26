@@ -1,7 +1,5 @@
-const loginToken = localStorage.getItem('token');
-
-export const fetchFavs = async () => {
-  const response = await fetch('http://localhost:8080/user/favs', {
+export const fetchWatched = async (loginToken) => {
+  const response = await fetch('http://localhost:8080/user/watched', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -12,7 +10,7 @@ export const fetchFavs = async () => {
   return data;
 };
 
-export const fetchLikes = async () => {
+export const fetchLikes = async (loginToken) => {
   const response = await fetch('http://localhost:8080/user/likes', {
     method: 'GET',
     headers: {
@@ -24,7 +22,7 @@ export const fetchLikes = async () => {
   return data;
 };
 
-export const fetchWatchlist = async () => {
+export const fetchWatchlist = async (loginToken) => {
   const response = await fetch('http://localhost:8080/user/watchlist', {
     method: 'GET',
     headers: {
@@ -36,74 +34,136 @@ export const fetchWatchlist = async () => {
   return data;
 };
 
-export const postFav = async (id) => {
-  const response = await fetch(`http://localhost:8080/user/favs/${id}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${loginToken}`
+export const getWatchedById = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/watched/${type}/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
     }
-  });
+  );
   const data = await response.json();
   return data;
 };
 
-export const postLike = async (id) => {
-  const response = await fetch(`http://localhost:8080/user/likes/${id}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${loginToken}`
+export const getLikeById = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/likes/${type}/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
     }
-  });
+  );
+  const data = await response.json();
+  return data;
+};
+export const getWatchlistById = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/watchlist/${type}/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
+    }
+  );
   const data = await response.json();
   return data;
 };
 
-export const postWatchlist = async (id) => {
-  const response = await fetch(`http://localhost:8080/user/watchlist/${id}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${loginToken}`
+export const postWatched = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/watched/${type}/${id}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
     }
-  });
+  );
   const data = await response.json();
   return data;
 };
 
-export const deleteFav = async (id) => {
-  const response = await fetch(`http://localhost:8080/user/favs/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${loginToken}`
+export const postLike = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/likes/${type}/${id}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
     }
-  });
+  );
   const data = await response.json();
   return data;
 };
 
-export const deleteLike = async (id) => {
-  const response = await fetch(`http://localhost:8080/user/likes/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${loginToken}`
+export const postWatchlist = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/watchlist/${type}/${id}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
     }
-  });
+  );
   const data = await response.json();
   return data;
 };
 
-export const deleteWatchlist = async (id) => {
-  const response = await fetch(`http://localhost:8080/user/watchlist/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${loginToken}`
+export const deleteWatched = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/watched/${type}/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
     }
-  });
+  );
+  const data = await response.json();
+  return data;
+};
+
+export const deleteLike = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/likes/${type}/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
+    }
+  );
+  const data = await response.json();
+  return data;
+};
+
+export const deleteWatchlist = async (loginToken, type, id) => {
+  const response = await fetch(
+    `http://localhost:8080/user/watchlist/${type}/${id}`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${loginToken}`
+      }
+    }
+  );
   const data = await response.json();
   return data;
 };

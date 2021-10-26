@@ -1,18 +1,13 @@
 .contentCarousel__poster {
   flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  width: min(47.5%,200px);
-  max-height: 300px;
+  padding-top: calc(100% * 1.5);
   border-radius: 4px;
   overflow: hidden;
   position: relative;
   border: none;
-  padding: 0;
+  display: block;
 }
 .contentCarousel__poster--isLoading {
-  height: min(37vw*1.66 ,300px);
-  max-height: 300px;
   background: linear-gradient(307deg, #898989, #343434);
   background-size: 400% 400%;
 
@@ -45,12 +40,14 @@
 }
 
 .contentCarousel__poster > img {
+  position: absolute;
+  inset: 0;
   transition: all .3s;
-  max-width: 100%;
+  height: 100%;
   transform: scale(1);
 }
 .contentCarousel__poster:hover > img {
-  filter: brightness(.4);
+  filter: brightness(.4)blur(3px);
   transform: scale(1.3);
 }
 

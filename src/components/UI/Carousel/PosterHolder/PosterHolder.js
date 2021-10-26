@@ -27,9 +27,9 @@ const PosterHolder = (props) => {
     <Link
       to={`/${type}/${item.id}`}
       className={`${styles.contentCarousel__poster}
-      ${isSearch && styles.contentCarousel__profile}
-      ${isLoading && styles['contentCarousel__poster--isLoading']}
-      ${isLoading && styles['contentCarousel__poster--noimg']}`}
+      ${isSearch ? styles.contentCarousel__profile : ''}
+      ${isLoading ? styles['contentCarousel__poster--isLoading'] : ''}
+      ${isLoading ? styles['contentCarousel__poster--noimg'] : ''}`}
     >
       <img
         src={`https://image.tmdb.org/t/p/w500/${posterPath}`}
