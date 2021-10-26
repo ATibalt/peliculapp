@@ -1,18 +1,33 @@
+/* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect } from 'react';
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Login from './pages/Login/Login';
 import { logout, setUserData } from './store/slices/Login/authSlice';
 
-import './App.css';
-// import Navbar from './components/UI/Navbar/Navbar';
+import useMediaQuery from './hooks/useMediaQuery';
+import MobileNavbar from './components/UI/MobileNavbar/MobileNavbar';
+import Navbar from './components/UI/Navbar/Navbar';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 
-import Main from './pages/Main';
+// Pages
+import Home from './pages/Home/Home';
+import Search from './pages/Search/Search';
+import UserContent from './pages/UserContent/UserContent';
+
+import './App.css';
 
 function App() {
   const isLogedIn = useSelector((state) => state.auth.isLogedIn);
   const authDispatch = useDispatch();
-  const history = useHistory();
+
+  const currentWindowWidth = useMediaQuery();
+  const navbar =
+    currentWindowWidth < 768 ? (
+      <MobileNavbar isLogedIn={isLogedIn} />
+    ) : (
+      <Navbar isLogedIn={isLogedIn} />
+    );
 
   const logoutHandler = useCallback(() => {
     localStorage.removeItem('token');
@@ -39,20 +54,48 @@ function App() {
         loginToken: localStorage.getItem('token')
       })
     );
-    return history.push('/');
-  }, [logoutHandler, authDispatch, history]);
+    return () => {};
+  }, [logoutHandler, authDispatch]);
 
   return (
     <div className="App">
+      {navbar}
       <Switch>
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
         <Route exact path="/login">
-          {isLogedIn ? <Redirect to="/" /> : <Login isLogin />}
+          {isLogedIn ? <Redirect to="/home" /> : <Login isLogin />}
         </Route>
         <Route exact path="/sign-up">
-          {isLogedIn ? <Redirect to="/" /> : <Login />}
+          {isLogedIn ? <Redirect to="/home" /> : <Login />}
         </Route>
-        <Route path="/">
-          <Main isLogedIn={isLogedIn} />
+        <Route path="/home">
+          <Home />
+        </Route>
+        <Route path="/search">
+          <Search />
+        </Route>
+        <ProtectedRoute path="/watchlist" isLogedIn={isLogedIn}>
+          <UserContent isWatchlist title="Tu Lista" />
+        </ProtectedRoute>
+        <ProtectedRoute path="/likes" isLogedIn={isLogedIn}>
+          <UserContent isLikes title="Tus Likes" />
+        </ProtectedRoute>
+        <ProtectedRoute path="/watched" isLogedIn={isLogedIn}>
+          <UserContent isWatched title="Ya has visto" />
+        </ProtectedRoute>
+        <ProtectedRoute path="/user" isLogedIn={isLogedIn}>
+          <main style={{ padding: '100px' }}>
+            <button type="button" onClick={logoutHandler}>
+              Logout
+            </button>
+          </main>
+        </ProtectedRoute>
+        <Route path="*">
+          <main style={{ padding: '100px' }}>
+            <span>404 page not found</span>
+          </main>
         </Route>
       </Switch>
     </div>

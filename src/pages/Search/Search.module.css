@@ -96,11 +96,11 @@
 }
 
 @media only screen and (min-width: 768px) {
+  .search {
+    padding: 75px 2rem 0 2rem;
+  }
   .search__searchResults {
     grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
-  }
-  .search{
-    padding: clamp(75px,10vh,100px) 2rem 0 2rem;
   }
 }
 
@@ -111,8 +111,6 @@
     align-items: flex-start;
   }
   .search__searchGroup {
-    width: 400px;
-    max-width: 400px;
-    flex-shrink: 0;
+    max-width: 500px;
   }
 }
