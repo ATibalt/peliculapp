@@ -6,9 +6,12 @@ import Login from './pages/Login/Login';
 import { logout, setUserData } from './store/slices/Login/authSlice';
 
 import useMediaQuery from './hooks/useMediaQuery';
+
+// Components
 import MobileNavbar from './components/UI/MobileNavbar/MobileNavbar';
 import Navbar from './components/UI/Navbar/Navbar';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import Footer from './components/UI/Footer/Footer';
 
 // Pages
 import Home from './pages/Home/Home';
@@ -106,6 +109,7 @@ function App() {
           </main>
         </Route>
       </Switch>
+      <Footer />
     </div>
   );
 }
