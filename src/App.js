@@ -14,6 +14,8 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Home from './pages/Home/Home';
 import Search from './pages/Search/Search';
 import UserContent from './pages/UserContent/UserContent';
+import PersonDescription from './pages/PersonDescription/PersonDescription';
+import ContentDescription from './pages/ContentDescription/ContentDescription';
 
 import './App.css';
 
@@ -85,6 +87,12 @@ function App() {
         <ProtectedRoute path="/watched" isLogedIn={isLogedIn}>
           <UserContent isWatched title="Ya has visto" />
         </ProtectedRoute>
+        <Route path="/person/:id">
+          <PersonDescription />
+        </Route>
+        <Route path="/:type/:id">
+          <ContentDescription />
+        </Route>
         <ProtectedRoute path="/user" isLogedIn={isLogedIn}>
           <main style={{ padding: '100px' }}>
             <button type="button" onClick={logoutHandler}>
