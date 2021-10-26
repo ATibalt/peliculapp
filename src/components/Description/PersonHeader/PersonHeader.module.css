@@ -10,6 +10,7 @@
   column-gap: 1.3rem;
   flex-grow: 0;
   flex-shrink: 0;
+  align-self: flex-start;
 }
 
 .header .header__posterCont {
@@ -21,6 +22,7 @@
   background-size: 400% 400%;
   display: flex;
   justify-content: center;
+
 
   -webkit-animation: SkeletonLoad 30s ease infinite;
   -moz-animation: SkeletonLoad 30s ease infinite;
