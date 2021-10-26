@@ -29,7 +29,7 @@ const Navbar = (props) => {
           <NavLink
             className={styles.navbar_navlink}
             activeClassName={styles['navbar_navlink--active']}
-            to="/liked"
+            to="/likes"
           >
             Tus likes
           </NavLink>

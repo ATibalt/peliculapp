@@ -48,7 +48,7 @@ const MobileNavbar = (props) => {
             <NavLink
               className={styles.mobileNavbar_navlink}
               activeClassName={styles['mobileNavbar_navlink--active']}
-              to="/liked"
+              to="/likes"
             >
               <FontAwesomeIcon icon={faThumbsUp} />
             </NavLink>
