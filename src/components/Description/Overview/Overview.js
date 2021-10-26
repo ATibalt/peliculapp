@@ -16,7 +16,7 @@ const Overview = (props) => {
       .filter((item) => item.job === 'Director')
       .map((item) => item.name);
     writers = crew
-      .filter((item) => item.job === 'Screenplay')
+      .filter((item) => item.job === 'Screenplay' || item.job === 'Writer')
       .map((item) => item.name);
     dp = crew
       .filter((item) => item.job === 'Director of Photography')

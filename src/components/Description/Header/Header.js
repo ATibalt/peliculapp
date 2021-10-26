@@ -44,7 +44,7 @@ const Header = (props) => {
       } else {
         rating = '';
       }
-      release = data.release_date.split('-');
+      release = data.release_date ? data.release_date.split('-') : '';
       runtime =
         data.runtime > 60 ? convertMinToHr(data.runtime) : `${data.runtime} m`;
       votes = data.vote_average * 10;
@@ -64,11 +64,13 @@ const Header = (props) => {
       } else {
         rating = '';
       }
-      release = data.first_air_date.split('-');
-      runtime =
-        data.episode_run_time[0] > 60
-          ? convertMinToHr(data.episode_run_time[0])
-          : `${data.episode_run_time[0]} m`;
+      release = data.first_air_date ? data.first_air_date.split('-') : '';
+      if (data.episode_run_time.length > 0) {
+        runtime =
+          data.episode_run_time[0] > 60
+            ? convertMinToHr(data.episode_run_time[0])
+            : `${data.episode_run_time[0]} m`;
+      }
       votes = data.vote_average * 10;
       trailer = checkTrailer();
       image = `https://image.tmdb.org/t/p/w500/${data.poster_path}`;
