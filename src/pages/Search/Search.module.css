@@ -7,6 +7,7 @@
 .search__searchGroup {
   width: 100%;
   max-width: 100%;
+  margin-bottom: 20px;
 }
 .search__searchBar {
   min-height: 48px;
@@ -74,6 +75,19 @@
   background-color: rgb(92, 97, 117);
 }
 
+.search__more {
+  height: 40px;
+  width: 100%;
+  background-color: rgb(70, 74, 88);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.search__more--disabled {
+  cursor: not-allowed;
+}
+
 .search__searchResults {
   display: grid;
   grid-gap: 1rem;
@@ -100,7 +114,7 @@
     padding: 75px 2rem 0 2rem;
   }
   .search__searchResults {
-    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(175px, 100%), 1fr));
   }
 }
 

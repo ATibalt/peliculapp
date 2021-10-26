@@ -146,9 +146,9 @@ const Info = (props) => {
     <div className={styles.header__contentTitle}>
       <span>{title}</span>
       <div className={styles.header__data}>
-        <span>{release}</span>
+        {release && <span>{release}</span>}
         {rating && <span> · {rating}</span>}
-        {runtime !== '0 m' && <span> · {runtime}</span>}
+        {runtime && <span> · {runtime}</span>}
       </div>
       {votes !== 0 && <span>{votes}% · TMDB User Score</span>}
       <div className={styles.actions}>
