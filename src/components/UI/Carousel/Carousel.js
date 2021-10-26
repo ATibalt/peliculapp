@@ -15,17 +15,21 @@ const Carousel = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [maxPages, setMaxPages] = useState(0);
   const currentWindowWidth = useMediaQuery();
-  const pictureWidth = isPerson ? 165 : 215;
+  const pictureWidth = 215;
   let pictures;
 
   if (isPerson) {
     const firstTen = content.length > 10 ? content.slice(0, 10) : [...content];
     pictures = firstTen.map((item) => (
-      <ProfileHolder key={item.credit_id} item={item} />
+      <div className={styles.contentCarousel__posterCont}>
+        <ProfileHolder key={item.credit_id} item={item} />
+      </div>
     ));
   } else {
     pictures = content.map((item) => (
-      <PosterHolder key={item.id} item={item} />
+      <div className={styles.contentCarousel__posterCont}>
+        <PosterHolder key={item.id} item={item} />
+      </div>
     ));
   }
 

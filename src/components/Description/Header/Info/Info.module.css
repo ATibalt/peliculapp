@@ -69,11 +69,26 @@
   border-radius: 50%;
   padding: 0;
 }
-
-.actions__add .actions__button--active {
+.actions__add .actions__button:hover, .actions__add .actions__button--active {
   color: black;
   background-color: white;
 }
+
+.actions__add .actions__button:hover {
+  cursor: pointer;
+}
+
+.actions__add.actions__add--disabled > .actions__button {
+  color: #898989;
+  background-color: transparent;
+  cursor: not-allowed;
+}
+.actions__add.actions__add--disabled > .actions__button:hover {
+  color: #898989;
+  background-color: transparent;
+  cursor: not-allowed;
+}
+
 
 @media only screen and (max-width: 768px) {
   .header__info .header__contentTitle {
