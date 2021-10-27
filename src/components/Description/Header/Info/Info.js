@@ -37,25 +37,24 @@ const Info = (props) => {
     const data = {
       ...watched
     };
-
     return data;
   }, [loginToken, type, id]);
+
   const fetchLikes = useCallback(async () => {
     const like = await getLikeById(loginToken, type, id);
 
     const data = {
       ...like
     };
-
     return data;
   }, [loginToken, type, id]);
+
   const fetchWatchlist = useCallback(async () => {
     const like = await getWatchlistById(loginToken, type, id);
 
     const data = {
       ...like
     };
-
     return data;
   }, [loginToken, type, id]);
 
@@ -68,11 +67,11 @@ const Info = (props) => {
         }
       });
     }
-
     return () => {
       isSubscribed = false;
     };
   }, [fetchWatched, isWatched, isLogedIn]);
+
   useEffect(() => {
     let isSubscribed = true;
     if (isLogedIn) {
@@ -82,11 +81,11 @@ const Info = (props) => {
         }
       });
     }
-
     return () => {
       isSubscribed = false;
     };
   }, [fetchLikes, isLiked, isLogedIn]);
+
   useEffect(() => {
     let isSubscribed = true;
     if (isLogedIn) {
@@ -96,7 +95,6 @@ const Info = (props) => {
         }
       });
     }
-
     return () => {
       isSubscribed = false;
     };

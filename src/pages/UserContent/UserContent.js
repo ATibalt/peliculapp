@@ -30,7 +30,9 @@ const INITIAL_STATE = {
   filters: {},
   isListFiltered: false,
   genresList: [],
-  showMovies: true
+  showMovies: true,
+  hasError: false,
+  errorMessage: ''
 };
 
 function contentReducer(state, action) {
@@ -93,6 +95,14 @@ function contentReducer(state, action) {
         genresList: fetchedGenres
       };
     }
+    case 'SET_ERROR': {
+      return {
+        ...INITIAL_STATE,
+        isLoading: false,
+        hasError: action.payload.hasError,
+        errorMessage: action.payload.message
+      };
+    }
     default:
       return {
         ...state
@@ -110,8 +120,15 @@ const UserContent = (props) => {
     INITIAL_STATE
   );
 
-  const { isLoading, display, genresList, showMovies, isListFiltered } =
-    contentState;
+  const {
+    isLoading,
+    display,
+    genresList,
+    showMovies,
+    isListFiltered,
+    hasError,
+    errorMessage
+  } = contentState;
 
   const [showFilter, setShowFilter] = useState(false);
 
@@ -149,6 +166,10 @@ const UserContent = (props) => {
         list = await fetchWatched(loginToken);
       }
 
+      if (list.hasError) {
+        return list;
+      }
+
       const movies = list.results.filter((item) => item.type === 'movie');
       const tv = list.results.filter((item) => item.type === 'tv');
 
@@ -174,7 +195,10 @@ const UserContent = (props) => {
     let isSubscribed = true;
     if (isLogedIn) {
       getList().then((res) => {
-        if (isSubscribed) {
+        if (res.hasError) {
+          dispatchContent({ type: 'SET_ERROR', payload: res });
+        }
+        if (isSubscribed && !res.hasError) {
           dispatchContent({ type: 'SET_CONTENT', payload: res });
         }
       });
@@ -182,7 +206,7 @@ const UserContent = (props) => {
     return () => {
       isSubscribed = false;
     };
-  }, [getList, isLogedIn]);
+  }, [getList, isLogedIn, hasError]);
 
   const typeTogglerHandler = (event) => {
     dispatchContent({ type: 'TOGGLE_CONTENT' });
@@ -254,18 +278,29 @@ const UserContent = (props) => {
             display.map((movie) => (
               <PosterHolder item={movie} key={movie.id} />
             ))}
+          {!isLoading && hasError && (
+            <>
+              <h3 className={styles.msgText}>
+                Ha ocurrido un error al intentar contactar al servidor
+              </h3>
+              <span className={styles.msgText}>{errorMessage}</span>
+            </>
+          )}
           {!isLoading && display.length === 0 && isListFiltered && (
             <h3 className={styles.msgText}>
               Ninguna {showMovies ? 'película' : 'serie'} de esta lista coincide
               con los filtros ingresados
             </h3>
           )}
-          {!isLoading && display.length === 0 && !isListFiltered && (
-            <h3 className={styles.msgText}>
-              Todavía no has agregado {showMovies ? 'películas' : 'series'} a
-              esta lista
-            </h3>
-          )}
+          {!isLoading &&
+            display.length === 0 &&
+            !isListFiltered &&
+            !hasError && (
+              <h3 className={styles.msgText}>
+                Todavía no has agregado {showMovies ? 'películas' : 'series'} a
+                esta lista
+              </h3>
+            )}
         </div>
       </div>
     </main>
