@@ -21,6 +21,7 @@ import PersonDescription from './pages/PersonDescription/PersonDescription';
 import ContentDescription from './pages/ContentDescription/ContentDescription';
 
 import './App.css';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const isLogedIn = useSelector((state) => state.auth.isLogedIn);
@@ -96,17 +97,8 @@ function App() {
         <Route path="/:type/:id">
           <ContentDescription />
         </Route>
-        <ProtectedRoute path="/user" isLogedIn={isLogedIn}>
-          <main style={{ padding: '100px' }}>
-            <button type="button" onClick={logoutHandler}>
-              Logout
-            </button>
-          </main>
-        </ProtectedRoute>
         <Route path="*">
-          <main style={{ padding: '100px' }}>
-            <span>404 page not found</span>
-          </main>
+          <NotFound />
         </Route>
       </Switch>
       <Footer />
