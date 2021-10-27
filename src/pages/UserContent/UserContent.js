@@ -255,13 +255,13 @@ const UserContent = (props) => {
               <PosterHolder item={movie} key={movie.id} />
             ))}
           {!isLoading && display.length === 0 && isListFiltered && (
-            <h3 className={styles.msgTxt}>
+            <h3 className={styles.msgText}>
               Ninguna {showMovies ? 'película' : 'serie'} de esta lista coincide
               con los filtros ingresados
             </h3>
           )}
           {!isLoading && display.length === 0 && !isListFiltered && (
-            <h3 className={styles.msgSpan}>
+            <h3 className={styles.msgText}>
               Todavía no has agregado {showMovies ? 'películas' : 'series'} a
               esta lista
             </h3>
