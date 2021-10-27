@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPlay,
-  faThumbsUp,
-  faEye,
-  faClock
-} from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 
 import styles from './Info.module.css';
@@ -23,7 +16,7 @@ import {
 } from '../../../../utils/API/backend-api-requests';
 
 const Info = (props) => {
-  const { id, type, title, release, rating, runtime, votes, trailer } = props;
+  const { id, type, title, release, rating, runtime, votes } = props;
   const [isWatched, setIsWatched] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isWatchlist, setIsWatchlist] = useState(false);
@@ -150,17 +143,6 @@ const Info = (props) => {
       </div>
       {votes !== 0 && <span>{votes}% · TMDB User Score</span>}
       <div className={styles.actions}>
-        <a
-          className={`${styles.actions__watchTrailer} ${
-            !trailer[0] && styles['actions__watchTrailer--disabled']
-          }`}
-          href={trailer[1]}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <FontAwesomeIcon icon={faPlay} />
-          <span>Trailer</span>
-        </a>
         <div
           className={`${styles.actions__add} ${
             !isLogedIn && styles['actions__add--disabled']
@@ -173,7 +155,9 @@ const Info = (props) => {
             }`}
             onClick={toggleWatchedHandler}
           >
-            <FontAwesomeIcon icon={faEye} />
+            <span>
+              {isWatched ? 'Ya has visto esta película' : 'Marcar como vista'}
+            </span>
           </button>
           <button
             type="button"
@@ -182,7 +166,9 @@ const Info = (props) => {
             }`}
             onClick={toggleLikeHandler}
           >
-            <FontAwesomeIcon icon={faThumbsUp} />
+            <span>
+              {isLiked ? 'Ya la has likeado' : 'Likear esta película'}
+            </span>
           </button>
           <button
             type="button"
@@ -191,7 +177,9 @@ const Info = (props) => {
             }`}
             onClick={toggleWatchlistHandler}
           >
-            <FontAwesomeIcon icon={faClock} />
+            <span>
+              {isWatchlist ? 'Ya está en tu watchlist' : 'Agregar a watchlist'}
+            </span>
           </button>
         </div>
       </div>
@@ -206,8 +194,7 @@ Info.propTypes = {
   release: PropTypes.string,
   rating: PropTypes.string,
   runtime: PropTypes.string,
-  votes: PropTypes.number,
-  trailer: PropTypes.arrayOf(PropTypes.any)
+  votes: PropTypes.number
 };
 
 Info.defaultProps = {
@@ -217,8 +204,7 @@ Info.defaultProps = {
   release: '',
   rating: '',
   runtime: '',
-  votes: 0,
-  trailer: []
+  votes: 0
 };
 
 export default Info;

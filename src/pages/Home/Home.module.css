@@ -1,4 +1,7 @@
-.homeHero {
+.main {
+  min-height: 100vh;
+}
+.hero {
   height: 85vh;
   position: relative;
   overflow: hidden;
@@ -9,13 +12,13 @@
   -moz-animation: SkeletonLoading 30s ease infinite;
   animation: SkeletonLoading 30s ease infinite;
 }
-.homeHero > img {
+.hero > img {
   position: relative;
   left: 50%;
   transform: translate(-50%);
   height: max(85vh, 100vw * 0.5625);
 }
-.homeHero .homeHero__title{
+.hero .hero__title{
   position: absolute;
   bottom: 0;
   left: 0;
@@ -26,17 +29,17 @@
   width: 100%;
   background: linear-gradient(180deg, rgba(0,0,0,0) 0%,rgba(0,0,0,.3) 25%, rgba(0,0,0,.7) 75%, rgba(0,0,0,1) 100%);
 }
-.homeHero__title > span:first-child {
+.hero__title > span:first-child {
   font-size: 1.35rem;
   font-weight: bold;
 }
-.homeHero__title > span:nth-child(2) {
+.hero__title > span:nth-child(2) {
   font-size: 2rem;
   font-weight: bolder;
   margin-bottom: 10px;
 }
 
-.homeHero__title .homeHero__loader {
+.hero__title .hero__loader {
   height: 3px;
   background-color: red;
   -webkit-animation: animatedBorder 10s infinite;

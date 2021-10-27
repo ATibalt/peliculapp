@@ -79,10 +79,10 @@ const Home = () => {
   }, [topContentIndex]);
 
   return (
-    <main>
+    <main className={styles.main}>
       <div
-        className={`${styles.homeHero} ${
-          heroIsLoading && styles['homeHero--isLoading']
+        className={`${styles.hero} ${
+          heroIsLoading && styles['hero--isLoading']
         }`}
       >
         {!moviesLoading && (
@@ -92,10 +92,10 @@ const Home = () => {
               alt={topContent.title[topContentIndex]}
               onLoad={() => setHeroIsLoading(false)}
             />
-            <div className={styles.homeHero__title}>
+            <div className={styles.hero__title}>
               <span>#1 en {topContent.type[topContentIndex]} esta semana</span>
               <span>{topContent.title[topContentIndex]}</span>
-              {showLoader && <div className={styles.homeHero__loader} />}
+              {showLoader && <div className={styles.hero__loader} />}
             </div>
           </>
         )}

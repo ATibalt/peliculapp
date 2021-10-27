@@ -1,11 +1,11 @@
 .header__contentTitle {
   color: white;
-  height: min(40vw*1.6, 300px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   flex-grow: 1;
   position: relative;
+  max-width: 400px;
 }
 
 .header__info .header__contentTitle > * {
@@ -21,57 +21,28 @@
 }
 
 .actions {
-  position: relative;
-  z-index: 1;
   color: white;
-  margin-top: 20px !important;
-  height: 40px;
-  min-height: 40px;
-  display: flex;
-  column-gap: 1.3rem;
-
-}
-.actions__watchTrailer{
-  height: 100%;
-  width: min(40vw, 200px);
-  background-color: red;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color:white;
-  text-decoration: none;
-}
-.actions__watchTrailer:visited {
-  color: white;
-}
-.actions__watchTrailer> span {
-  margin-left: 10px;
-}
-
-.actions__watchTrailer--disabled {
-  background-color: grey;
-  pointer-events: none;
-}
-
-.actions .actions__add {
-  height: 100%;
-  width: min(40vw, 200px);
-  display: flex;
-  column-gap: 1.3rem;
 }
 .actions__add .actions__button {
-  width: 40px;
-  font-size: 1rem;
-  color: white;
-  background-color: transparent;
-  border: 1px solid white;
-  border-radius: 50%;
-  padding: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  margin-top: 10px;
+  background-color: rgb(64, 68, 82);
+  color: rgb(137, 144, 172);
+  border: none;
+  border-radius: 4px;
+  padding: .6rem;
+}
+.actions__add .actions__button > span {
+  font-size: .8em;
+  font-weight: bold;
 }
 .actions__add .actions__button:hover, .actions__add .actions__button--active {
-  color: black;
-  background-color: white;
+  color: white;
+  background-color: rgb(137, 144, 172);;
 }
 
 .actions__add .actions__button:hover {
@@ -79,27 +50,5 @@
 }
 
 .actions__add.actions__add--disabled > .actions__button {
-  color: #898989;
-  background-color: transparent;
-  cursor: not-allowed;
-}
-.actions__add.actions__add--disabled > .actions__button:hover {
-  color: #898989;
-  background-color: transparent;
-  cursor: not-allowed;
-}
-
-
-@media only screen and (max-width: 768px) {
-  .header__info .header__contentTitle {
-    position: relative;
-  }
-  .actions {
-    position: absolute;
-    width: calc(100vw - 2.6rem);
-    transform: translateY(calc(100% + 20px));
-    margin-top: 0;
-    bottom: 0;
-    right: 0;
-  }
+  display: none;
 }

@@ -41,6 +41,7 @@ const ContentDescription = () => {
 
     return () => {
       isSubscribed = false;
+      setIsLoading(true);
     };
   }, [fetchData]);
 

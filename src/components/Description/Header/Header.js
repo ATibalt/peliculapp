@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 import styles from './Header.module.css';
 import Info from './Info/Info';
 
 const Header = (props) => {
   const { data, type } = props;
+  const [backdropIsLoading, setBackdropIsLoading] = useState(false);
   let title;
   let rating;
   let release = [];
@@ -49,7 +52,7 @@ const Header = (props) => {
         data.runtime > 60 ? convertMinToHr(data.runtime) : `${data.runtime} m`;
       votes = data.vote_average * 10;
       trailer = checkTrailer();
-      image = `https://image.tmdb.org/t/p/w500/${data.poster_path}`;
+      image = `https://image.tmdb.org/t/p/original/${data.poster_path}`;
       break;
     }
     case 'tv': {
@@ -73,11 +76,11 @@ const Header = (props) => {
       }
       votes = data.vote_average * 10;
       trailer = checkTrailer();
-      image = `https://image.tmdb.org/t/p/w500/${data.poster_path}`;
+      image = `https://image.tmdb.org/t/p/original/${data.poster_path}`;
       break;
     }
     case 'person': {
-      image = `https://image.tmdb.org/t/p/w500/${data.profile_path}`;
+      image = `https://image.tmdb.org/t/p/original/${data.profile_path}`;
       break;
     }
     default:
@@ -90,20 +93,39 @@ const Header = (props) => {
         type !== 'person' && styles['header--lg']
       }`}
     >
-      <div className={styles.header__backdropCont}>
+      <div
+        className={`${styles.header__backdropCont} ${
+          backdropIsLoading ? styles['header__backdropCont--loading'] : ''
+        }`}
+      >
         <img
           src={`https://image.tmdb.org/t/p/original/${data.backdrop_path}`}
           alt={`${title} backdrop`}
           className={styles.header__backdrop}
+          onLoad={() => setBackdropIsLoading(false)}
         />
       </div>
       <div className={styles.header__info}>
-        <div className={styles.header__posterCont}>
-          <img
-            src={image}
-            alt={`${title} poster`}
-            className={styles.header__poster}
-          />
+        <div className={styles.header__visuals}>
+          <div className={styles.header__posterCont}>
+            <img
+              src={image}
+              alt={`${title} poster`}
+              className={styles.header__poster}
+            />
+          </div>
+
+          <a
+            className={`${styles.header__watchTrailer} ${
+              !trailer[0] && styles['actions__watchTrailer--disabled']
+            }`}
+            href={trailer[1]}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FontAwesomeIcon icon={faPlay} />
+            <span>Trailer</span>
+          </a>
         </div>
         <Info
           id={data.id}
