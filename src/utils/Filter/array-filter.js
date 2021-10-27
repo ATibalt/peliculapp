@@ -4,13 +4,13 @@ function orderByYear(content, isMovies) {
       const yearsA = a.first_air_date.split('–');
       const yearsB = b.first_air_date.split('–');
 
-      return yearsB[0] - yearsA[0];
+      return yearsA[0] - yearsB[0];
     });
   } else {
     content.sort((a, b) => {
       const yearA = a.release_date.split('-');
       const yearB = b.release_date.split('-');
-      return yearB[0] - yearA[0];
+      return yearA[0] - yearB[0];
     });
   }
 
@@ -25,15 +25,21 @@ function orderByTitle(content, isMovies) {
   return content;
 }
 
+function orderByPopularity(content) {
+  content.sort((a, b) => a.popularity - b.popularity);
+
+  return content;
+}
+
 function filterArray(content, isMovies, filters) {
   let sortedArray;
 
   if (filters.order) {
     switch (filters.order) {
-      case 'year/desc':
+      case 'year/asc':
         sortedArray = orderByYear(content, isMovies);
         break;
-      case 'year/asc':
+      case 'year/desc':
         sortedArray = orderByYear(content, isMovies).reverse();
         break;
       case 'title/asc':
@@ -41,6 +47,12 @@ function filterArray(content, isMovies, filters) {
         break;
       case 'title/desc':
         sortedArray = orderByTitle(content, isMovies).reverse();
+        break;
+      case 'pop/asc':
+        sortedArray = orderByPopularity(content);
+        break;
+      case 'pop/desc':
+        sortedArray = orderByPopularity(content).reverse();
         break;
       case 'date/asc':
         sortedArray = content;

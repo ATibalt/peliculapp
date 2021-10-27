@@ -77,7 +77,7 @@
   width: 100%;
 }
 
-.msgSpan {
+.msgText {
   grid-column: 1 / span end;
   text-align: center;
   color: grey;

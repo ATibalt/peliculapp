@@ -97,6 +97,7 @@ const ContentFilters = (props) => {
           <option value="date">Fecha de agregado</option>
           <option value="year">Año</option>
           <option value="title">Titulo</option>
+          <option value="pop">Popularidad</option>
         </select>
         <span>-</span>
         <select
