@@ -27,6 +27,15 @@
 .navbar_navlink.navbar_navlink--last, .navbar_loginLinks{
   margin-left: auto;
 }
+
+.navbar_navlink.navbar_navlink--last{
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: unset;
+}
+
 .navbar_navlink--active {
   font-weight: bold;
 }

@@ -26,20 +26,20 @@ function App() {
   const isLogedIn = useSelector((state) => state.auth.isLogedIn);
   const authDispatch = useDispatch();
 
-  const currentWindowWidth = useMediaQuery();
-  const navbar =
-    currentWindowWidth < 768 ? (
-      <MobileNavbar isLogedIn={isLogedIn} />
-    ) : (
-      <Navbar isLogedIn={isLogedIn} />
-    );
-
   const logoutHandler = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('expiryDate');
     localStorage.removeItem('userId');
     authDispatch(logout());
   }, [authDispatch]);
+
+  const currentWindowWidth = useMediaQuery();
+  const navbar =
+    currentWindowWidth < 768 ? (
+      <MobileNavbar isLogedIn={isLogedIn} logout={logoutHandler} />
+    ) : (
+      <Navbar isLogedIn={isLogedIn} logout={logoutHandler} />
+    );
 
   useEffect(() => {
     const loginToken = localStorage.getItem('token');

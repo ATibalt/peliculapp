@@ -5,6 +5,7 @@ import {
   faEye,
   faHome,
   faSearch,
+  faSignOutAlt,
   faThumbsUp,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
@@ -13,14 +14,14 @@ import PropTypes from 'prop-types';
 import styles from './MobileNavbar.module.css';
 
 const MobileNavbar = (props) => {
-  // const title = 'PeliculApp';
-  const { isLogedIn } = props;
+  const { isLogedIn, logout } = props;
 
-  const userLinkRoute = isLogedIn ? '/user' : '/login';
+  const logoutHandler = () => {
+    logout();
+  };
 
   return (
     <>
-      {/* <header className={styles.mobileHeader}>{title}</header> */}
       <nav className={styles.mobileNavbar}>
         <NavLink
           className={styles.mobileNavbar_navlink}
@@ -59,26 +60,37 @@ const MobileNavbar = (props) => {
             >
               <FontAwesomeIcon icon={faEye} />
             </NavLink>
+            <button
+              className={styles.mobileNavbar_navlink}
+              type="button"
+              onClick={logoutHandler}
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} />
+            </button>
           </>
         )}
-        <NavLink
-          className={styles.mobileNavbar_navlink}
-          activeClassName={styles['mobileNavbar_navlink--active']}
-          to={userLinkRoute}
-        >
-          <FontAwesomeIcon icon={faUser} />
-        </NavLink>
+        {!isLogedIn && (
+          <NavLink
+            className={styles.mobileNavbar_navlink}
+            activeClassName={styles['mobileNavbar_navlink--active']}
+            to="/login"
+          >
+            <FontAwesomeIcon icon={faUser} />
+          </NavLink>
+        )}
       </nav>
     </>
   );
 };
 
 MobileNavbar.propTypes = {
-  isLogedIn: PropTypes.bool
+  isLogedIn: PropTypes.bool,
+  logout: PropTypes.func
 };
 
 MobileNavbar.defaultProps = {
-  isLogedIn: false
+  isLogedIn: false,
+  logout: () => {}
 };
 
 export default MobileNavbar;

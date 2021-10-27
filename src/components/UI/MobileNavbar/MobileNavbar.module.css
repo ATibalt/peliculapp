@@ -20,3 +20,9 @@
 .mobileNavbar_navlink--active{
   color: white;
 }
+
+.mobileNavbar > button {
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+}

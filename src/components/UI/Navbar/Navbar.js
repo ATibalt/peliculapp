@@ -5,7 +5,11 @@ import styles from './Navbar.module.css';
 
 const Navbar = (props) => {
   const title = 'PeliculApp';
-  const { isLogedIn } = props;
+  const { isLogedIn, logout } = props;
+
+  const logoutHandler = () => {
+    logout();
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -50,13 +54,13 @@ const Navbar = (props) => {
         Buscar
       </NavLink>
       {isLogedIn && (
-        <NavLink
+        <button
+          type="button"
           className={`${styles.navbar_navlink} ${styles['navbar_navlink--last']}`}
-          activeClassName={styles['navbar_navlink--active']}
-          to="/user"
+          onClick={logoutHandler}
         >
-          Username + ProfIMG
-        </NavLink>
+          Logout
+        </button>
       )}
       {!isLogedIn && (
         <div className={styles.navbar_loginLinks}>
@@ -81,11 +85,13 @@ const Navbar = (props) => {
 };
 
 Navbar.propTypes = {
-  isLogedIn: PropTypes.bool
+  isLogedIn: PropTypes.bool,
+  logout: PropTypes.func
 };
 
 Navbar.defaultProps = {
-  isLogedIn: false
+  isLogedIn: false,
+  logout: () => {}
 };
 
 export default Navbar;
