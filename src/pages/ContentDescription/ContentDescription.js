@@ -7,10 +7,15 @@ import styles from './ContentDescription.module.css';
 import Header from '../../components/Description/Header/Header';
 import Overview from '../../components/Description/Overview/Overview';
 import Carousel from '../../components/UI/Carousel/Carousel';
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 
 const ContentDescription = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [contentData, setContentData] = useState({});
+  const [contentData, setContentData] = useState({
+    isLoading: true,
+    content: {},
+    hasError: false,
+    message: ''
+  });
 
   const { type, id } = useParams();
 
@@ -34,52 +39,69 @@ const ContentDescription = () => {
     let isSubscribed = true;
     fetchData().then((res) => {
       if (isSubscribed) {
-        setContentData(res);
-        setIsLoading(false);
+        if (!res.hasError) {
+          setContentData((prevState) => ({
+            ...prevState,
+            isLoading: false,
+            content: res
+          }));
+        } else {
+          setContentData((prevState) => ({
+            ...prevState,
+            isLoading: false,
+            hasError: true,
+            message: res.message
+          }));
+        }
       }
     });
 
     return () => {
       isSubscribed = false;
-      setIsLoading(true);
     };
   }, [fetchData]);
 
   return (
     <main className={styles.description__main}>
-      {!isLoading && (
+      {!contentData.isLoading && !contentData.hasError && (
         <>
-          <Header data={contentData} type={type} />
+          <Header data={contentData.content} type={type} />
           <Overview
             type={type}
-            text={contentData.overview}
+            text={contentData.content.overview}
             crew={
               type === 'movie'
-                ? contentData.credits.crew
-                : contentData.aggregate_credits.crew
+                ? contentData.content.credits.crew
+                : contentData.content.aggregate_credits.crew
             }
-            genres={contentData.genres}
-            createdBy={type === 'tv' ? contentData.created_by : []}
+            genres={contentData.content.genres}
+            createdBy={type === 'tv' ? contentData.content.created_by : []}
           />
           <Carousel
             title="Reparto"
             content={
               type === 'movie'
-                ? contentData.credits.cast
-                : contentData.aggregate_credits.cast
+                ? contentData.content.credits.cast
+                : contentData.content.aggregate_credits.cast
             }
             isPerson
           />
-          {contentData.similar.results.length > 0 && (
-            <Carousel title="Similares" content={contentData.similar.results} />
+          {contentData.content.similar.results.length > 0 && (
+            <Carousel
+              title="Similares"
+              content={contentData.content.similar.results}
+            />
           )}
-          {contentData.recommendations.results.length > 0 && (
+          {contentData.content.recommendations.results.length > 0 && (
             <Carousel
               title="Recomendadas"
-              content={contentData.recommendations.results}
+              content={contentData.content.recommendations.results}
             />
           )}
         </>
+      )}
+      {!contentData.isLoading && contentData.hasError && (
+        <ErrorMessage message={contentData.message} />
       )}
     </main>
   );

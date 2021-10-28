@@ -18,6 +18,7 @@ import {
 
 import PosterHolder from '../../components/UI/Carousel/PosterHolder/PosterHolder';
 import ContentFilters from '../../components/ContentFilters/ContentFilters';
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 import filterArray from '../../utils/Filter/array-filter';
 
 import styles from './UserContent.module.css';
@@ -43,6 +44,8 @@ function contentReducer(state, action) {
       return {
         ...state,
         isLoading: false,
+        hasError: false,
+        errorMessage: '',
         movieList: fetchedMovies,
         tvList: fetchedTv,
         display: state.showMovies ? fetchedMovies : fetchedTv
@@ -147,7 +150,11 @@ const UserContent = (props) => {
     let isSubscribed = true;
     getMovieGenres().then((res) => {
       if (isSubscribed) {
-        dispatchContent({ type: 'SET_GENRES', payload: res.genres });
+        if (!res.hasError) {
+          dispatchContent({ type: 'SET_GENRES', payload: res.genres });
+        } else {
+          dispatchContent({ type: 'SET_GENRES', payload: [] });
+        }
       }
     });
     return () => {
@@ -272,36 +279,33 @@ const UserContent = (props) => {
             </div>
           </div>
         </div>
-        <div className={styles.content__grid}>
-          {!isLoading &&
-            display.length > 0 &&
-            display.map((movie) => (
-              <PosterHolder item={movie} key={movie.id} />
-            ))}
-          {!isLoading && hasError && (
-            <>
+        {!hasError && (
+          <div className={styles.content__grid}>
+            {!isLoading &&
+              display.length > 0 &&
+              display.map((movie) => (
+                <PosterHolder item={movie} key={movie.id} />
+              ))}
+            {!isLoading && display.length === 0 && isListFiltered && (
               <h3 className={styles.msgText}>
-                Ha ocurrido un error al intentar contactar al servidor
-              </h3>
-              <span className={styles.msgText}>{errorMessage}</span>
-            </>
-          )}
-          {!isLoading && display.length === 0 && isListFiltered && (
-            <h3 className={styles.msgText}>
-              Ninguna {showMovies ? 'película' : 'serie'} de esta lista coincide
-              con los filtros ingresados
-            </h3>
-          )}
-          {!isLoading &&
-            display.length === 0 &&
-            !isListFiltered &&
-            !hasError && (
-              <h3 className={styles.msgText}>
-                Todavía no has agregado {showMovies ? 'películas' : 'series'} a
-                esta lista
+                Ninguna {showMovies ? 'película' : 'serie'} de esta lista
+                coincide con los filtros ingresados
               </h3>
             )}
-        </div>
+            {!isLoading &&
+              display.length === 0 &&
+              !isListFiltered &&
+              !hasError && (
+                <h3 className={styles.msgText}>
+                  Todavía no has agregado {showMovies ? 'películas' : 'series'}{' '}
+                  a esta lista
+                </h3>
+              )}
+          </div>
+        )}
+        {!isLoading && hasError && (
+          <ErrorMessage message={errorMessage} isSmall />
+        )}
       </div>
     </main>
   );

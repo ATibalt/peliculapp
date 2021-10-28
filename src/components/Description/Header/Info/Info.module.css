@@ -45,6 +45,12 @@
   background-color: rgb(137, 144, 172);;
 }
 
+.actions__add .actions__button--error, .actions__add .actions__button--error:hover {
+  background: rgb(255, 92, 92);
+  color: white;
+  pointer-events: none;
+}
+
 .actions__add .actions__button:hover {
   cursor: pointer;
 }
@@ -52,3 +58,4 @@
 .actions__add.actions__add--disabled > .actions__button {
   display: none;
 }
+

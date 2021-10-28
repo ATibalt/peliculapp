@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useCallback, useEffect } from 'react';
 import Carousel from '../../components/UI/Carousel/Carousel';
 import {
@@ -7,6 +6,7 @@ import {
   fetchPopularTV,
   fetchUpcomingMovies
 } from '../../utils/API/api-requests';
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 
 import styles from './Home.module.css';
 
@@ -194,12 +194,7 @@ const Home = () => {
         popularTvAux.hasError &&
         onTheatresAux.hasError &&
         upcomingMoviesAux.hasError && (
-          <div className={styles.error}>
-            <h1 className={styles.error__message}>
-              Estamos experimentando problemas para comunicarnos con el servidor
-              :(
-            </h1>
-          </div>
+          <ErrorMessage message={popularMoviesAux.errorMessage} />
         )}
     </main>
   );

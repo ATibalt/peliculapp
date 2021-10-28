@@ -1,12 +1,12 @@
-.description__main {
-  min-height: 100vh;
-}
 .error {
-  height: 100vh;
   width: 100%;
+  height: 100vh;
+  color: grey;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: grey;
+}
+.error.error--small {
+  height: auto;
 }
