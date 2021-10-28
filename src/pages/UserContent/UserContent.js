@@ -19,99 +19,9 @@ import {
 import PosterHolder from '../../components/UI/Carousel/PosterHolder/PosterHolder';
 import ContentFilters from '../../components/ContentFilters/ContentFilters';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
-import filterArray from '../../utils/Filter/array-filter';
+import { contentReducer, INITIAL_STATE } from './reducer';
 
 import styles from './UserContent.module.css';
-
-const INITIAL_STATE = {
-  isLoading: true,
-  movieList: [],
-  tvList: [],
-  display: [],
-  filters: {},
-  isListFiltered: false,
-  genresList: [],
-  showMovies: true,
-  hasError: false,
-  errorMessage: ''
-};
-
-function contentReducer(state, action) {
-  switch (action.type) {
-    case 'SET_CONTENT': {
-      const fetchedMovies = [...action.payload.movies];
-      const fetchedTv = [...action.payload.tv];
-      return {
-        ...state,
-        isLoading: false,
-        hasError: false,
-        errorMessage: '',
-        movieList: fetchedMovies,
-        tvList: fetchedTv,
-        display: state.showMovies ? fetchedMovies : fetchedTv
-      };
-    }
-    case 'TOGGLE_CONTENT': {
-      const newShowState = !state.showMovies;
-      const newDisplayState = state.showMovies ? state.tvList : state.movieList;
-
-      return {
-        ...state,
-        showMovies: newShowState,
-        display: newDisplayState
-      };
-    }
-    case 'SET_FILTERS': {
-      let contentList = [];
-      let isFiltered = false;
-      const content = state.showMovies ? state.movieList : state.tvList;
-      if (state.display.length > 0) {
-        contentList = filterArray(
-          [...content],
-          state.showMovies,
-          action.payload
-        );
-        isFiltered = true;
-      }
-
-      return {
-        ...state,
-        display: contentList,
-        isListFiltered: isFiltered,
-        filters: action.payload
-      };
-    }
-    case 'CLEAR_FILTERS': {
-      const newDisplayState = state.showMovies ? state.movieList : state.tvList;
-
-      return {
-        ...state,
-        display: newDisplayState,
-        isListFiltered: false,
-        filters: {}
-      };
-    }
-    case 'SET_GENRES': {
-      const fetchedGenres = [...action.payload];
-      return {
-        ...state,
-        genresList: fetchedGenres
-      };
-    }
-    case 'SET_ERROR': {
-      return {
-        ...INITIAL_STATE,
-        isLoading: false,
-        hasError: action.payload.hasError,
-        errorMessage: action.payload.message
-      };
-    }
-    default:
-      return {
-        ...state
-      };
-  }
-}
 
 const UserContent = (props) => {
   const { title, isWatchlist, isLikes, isWatched } = props;
@@ -125,6 +35,8 @@ const UserContent = (props) => {
 
   const {
     isLoading,
+    currentPage,
+    totalPages,
     display,
     genresList,
     showMovies,
@@ -163,14 +75,14 @@ const UserContent = (props) => {
   }, [getMovieGenres]);
 
   const getList = useCallback(
-    async (pageValue = 1) => {
+    async (pageNum = 1) => {
       let list;
       if (isWatchlist) {
-        list = await fetchWatchlist(loginToken);
+        list = await fetchWatchlist(loginToken, pageNum);
       } else if (isLikes) {
-        list = await fetchLikes(loginToken);
+        list = await fetchLikes(loginToken, pageNum);
       } else if (isWatched) {
-        list = await fetchWatched(loginToken);
+        list = await fetchWatched(loginToken, pageNum);
       }
 
       if (list.hasError) {
@@ -193,7 +105,11 @@ const UserContent = (props) => {
         })
       );
 
-      return { movies: moviesWithData, tv: tvWithData };
+      return {
+        movies: moviesWithData,
+        tv: tvWithData,
+        totalPages: list.total_pages
+      };
     },
     [loginToken, isLikes, isWatched, isWatchlist]
   );
@@ -201,7 +117,7 @@ const UserContent = (props) => {
   useEffect(() => {
     let isSubscribed = true;
     if (isLogedIn) {
-      getList().then((res) => {
+      getList(currentPage).then((res) => {
         if (res.hasError) {
           dispatchContent({ type: 'SET_ERROR', payload: res });
         }
@@ -213,9 +129,16 @@ const UserContent = (props) => {
     return () => {
       isSubscribed = false;
     };
-  }, [getList, isLogedIn, hasError]);
+  }, [getList, isLogedIn, hasError, currentPage]);
 
-  const typeTogglerHandler = (event) => {
+  useEffect(
+    () => () => {
+      dispatchContent({ type: 'RESET_STATE' });
+    },
+    [isLikes, isWatched, isWatchlist]
+  );
+
+  const typeTogglerHandler = () => {
     dispatchContent({ type: 'TOGGLE_CONTENT' });
   };
   const filterTogglerHandler = () => {
@@ -227,6 +150,12 @@ const UserContent = (props) => {
   };
   const filtersClearHandler = () => {
     dispatchContent({ type: 'CLEAR_FILTERS' });
+  };
+
+  const loadMoreHandler = () => {
+    if (currentPage + 1 <= totalPages) {
+      dispatchContent({ type: 'INCREASE_PAGE' });
+    }
   };
 
   return (
@@ -278,6 +207,17 @@ const UserContent = (props) => {
               />
             </div>
           </div>
+          <button
+            type="button"
+            onClick={loadMoreHandler}
+            className={`${styles.search__more} ${
+              currentPage === totalPages && styles['search__more--disabled']
+            }`}
+          >
+            {currentPage === totalPages
+              ? 'Se han cargado todos los resultados'
+              : 'Cargar más resultados'}
+          </button>
         </div>
         {!hasError && (
           <div className={styles.content__grid}>

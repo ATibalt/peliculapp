@@ -1,12 +1,15 @@
-export const fetchWatched = async (loginToken) => {
+export const fetchWatched = async (loginToken, page) => {
   try {
-    const response = await fetch('http://localhost:8080/user/watched', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${loginToken}`
+    const response = await fetch(
+      `http://localhost:8080/user/watched?page=${page}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${loginToken}`
+        }
       }
-    });
+    );
     if (response.status !== 200) {
       const errorData = await response.json();
       throw new Error(errorData.message);
@@ -21,15 +24,18 @@ export const fetchWatched = async (loginToken) => {
   }
 };
 
-export const fetchLikes = async (loginToken) => {
+export const fetchLikes = async (loginToken, page) => {
   try {
-    const response = await fetch('http://localhost:8080/user/likes', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${loginToken}`
+    const response = await fetch(
+      `http://localhost:8080/user/likes?page=${page}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${loginToken}`
+        }
       }
-    });
+    );
     if (response.status !== 200) {
       const errorData = await response.json();
       throw new Error(errorData.message);
@@ -44,15 +50,18 @@ export const fetchLikes = async (loginToken) => {
   }
 };
 
-export const fetchWatchlist = async (loginToken) => {
+export const fetchWatchlist = async (loginToken, page) => {
   try {
-    const response = await fetch('http://localhost:8080/user/watchlist', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${loginToken}`
+    const response = await fetch(
+      `http://localhost:8080/user/watchlist?page=${page}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${loginToken}`
+        }
       }
-    });
+    );
     if (response.status !== 200) {
       const errorData = await response.json();
       throw new Error(errorData.message);
