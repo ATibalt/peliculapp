@@ -10,23 +10,31 @@
   column-gap: 1.3rem;
   flex-grow: 0;
   flex-shrink: 0;
-  align-self: flex-start;
 }
 
 .header .header__posterCont {
-  width: min(40vw, 200px);
-  height: min(40vw*1.6, 300px);
+  position: relative;
+  width: min(40vw, 300px);
   border-radius: 4px;
   overflow: hidden;
   background: linear-gradient(307deg, #898989, #343434);
   background-size: 400% 400%;
   display: flex;
   justify-content: center;
-
+  align-self: flex-start;
 
   -webkit-animation: SkeletonLoad 30s ease infinite;
   -moz-animation: SkeletonLoad 30s ease infinite;
   animation: SkeletonLoad 30s ease infinite;
+}
+.header__posterCont .header__aux {
+  padding-top: calc(100% * 1.5);
+}
+.header__posterCont  img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-height: 100%;
 }
 
 .header__bio {
@@ -92,8 +100,11 @@
 
 @media only screen and (min-width: 768px) {
   .header{
-    padding: 100px 1.3rem 0 1.3rem;
+    padding: 75px 1.3rem 0 1.3rem;
     margin-bottom: 0;
+  }
+  .header .header__posterCont {
+    align-self: flex-end;
   }
   .header__bio > button {
     background: none;

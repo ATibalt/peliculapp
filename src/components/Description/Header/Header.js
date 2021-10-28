@@ -114,7 +114,6 @@ const Header = (props) => {
               className={styles.header__poster}
             />
           </div>
-
           <a
             className={`${styles.header__watchTrailer} ${
               !trailer[0] && styles['actions__watchTrailer--disabled']

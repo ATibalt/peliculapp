@@ -22,13 +22,15 @@ const Header = (props) => {
     <div className={`${styles.header}`}>
       <div className={styles.header__info}>
         <div className={styles.header__posterCont}>
-          {image && (
-            <img
-              src={image}
-              alt={`${title} poster`}
-              className={styles.header__poster}
-            />
-          )}
+          <div className={styles.header__aux}>
+            {image && (
+              <img
+                src={image}
+                alt={`${title} poster`}
+                className={styles.header__poster}
+              />
+            )}
+          </div>
         </div>
         <PersonInfo personData={data} />
       </div>
