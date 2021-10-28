@@ -146,8 +146,8 @@ const Info = (props) => {
     }
   };
   const toggleLikeHandler = () => {
-    if (isLogedIn.exists) {
-      if (isLiked) {
+    if (isLogedIn) {
+      if (isLiked.exists) {
         deleteLike(loginToken, type, id).then((res) => {
           if (!res.hasError) {
             setIsLiked(false);
@@ -163,8 +163,8 @@ const Info = (props) => {
     }
   };
   const toggleWatchlistHandler = () => {
-    if (isLogedIn.exists) {
-      if (isWatchlist) {
+    if (isLogedIn) {
+      if (isWatchlist.exists) {
         deleteWatchlist(loginToken, type, id).then((res) => {
           if (!res.hasError) {
             setIsWatchlist(false);
@@ -235,8 +235,8 @@ const Info = (props) => {
             {!isWatchlist.hasError && (
               <span>
                 {isWatchlist.exists
-                  ? 'Ya está en tu watchlist'
-                  : 'Agregar a watchlist'}
+                  ? 'Ya está en tu lista'
+                  : 'Agregar a tu lista'}
               </span>
             )}
             {isWatchlist.hasError && (

@@ -68,7 +68,7 @@ export const fetchUpcomingMovies = async () => {
 export const fetchMultiSearch = async (searchValue, pageValue) => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/search/muti?api_key=${API_KEY}&language=${LANGUAGE_ES}&query=${searchValue}&page=${pageValue}&include_adult=false`
+      `https://api.themoviedb.org/3/search/multi?api_key=${API_KEY}&language=${LANGUAGE_ES}&query=${searchValue}&page=${pageValue}&include_adult=false`
     );
     if (response.status !== 200) {
       const data = await response.json();

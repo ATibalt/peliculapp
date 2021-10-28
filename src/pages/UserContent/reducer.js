@@ -2,8 +2,10 @@ import filterArray from '../../utils/Filter/array-filter';
 
 export const INITIAL_STATE = {
   isLoading: true,
-  currentPage: 1,
-  totalPages: undefined,
+  currentMoviePage: 1,
+  currentTvPage: 1,
+  totalMoviePages: undefined,
+  totalTvPages: undefined,
   movieList: [],
   tvList: [],
   display: [],
@@ -17,18 +19,28 @@ export const INITIAL_STATE = {
 
 export const contentReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_CONTENT': {
+    case 'SET_MOVIES': {
       const fetchedMovies = [...state.movieList, ...action.payload.movies];
+      return {
+        ...state,
+        isLoading: false,
+        hasError: false,
+        totalMoviePages: action.payload.totalPages,
+        errorMessage: '',
+        movieList: fetchedMovies,
+        display: fetchedMovies
+      };
+    }
+    case 'SET_TV': {
       const fetchedTv = [...state.tvList, ...action.payload.tv];
       return {
         ...state,
         isLoading: false,
         hasError: false,
-        totalPages: action.payload.totalPages,
+        totalTvPages: action.payload.totalPages,
         errorMessage: '',
-        movieList: fetchedMovies,
         tvList: fetchedTv,
-        display: state.showMovies ? fetchedMovies : fetchedTv
+        display: fetchedTv
       };
     }
     case 'TOGGLE_CONTENT': {
@@ -86,16 +98,23 @@ export const contentReducer = (state, action) => {
         errorMessage: action.payload.message
       };
     }
-    case 'INCREASE_PAGE': {
+    case 'INCREASE_MOVIE_PAGE': {
       return {
         ...state,
-        currentPage: state.currentPage + 1
+        currentMoviePage: state.currentMoviePage + 1
+      };
+    }
+    case 'INCREASE_TV_PAGE': {
+      return {
+        ...state,
+        currentTvPage: state.currentTvPage + 1
       };
     }
     case 'RESET_STATE': {
       return {
         ...INITIAL_STATE,
-        genresList: state.genresList
+        genresList: state.genresList,
+        showMovies: state.showMovies
       };
     }
     default:

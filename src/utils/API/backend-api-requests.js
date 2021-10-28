@@ -1,7 +1,7 @@
-export const fetchWatched = async (loginToken, page) => {
+export const fetchWatched = async (loginToken, type, page) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watched?page=${page}`,
+      `http://localhost:8080/user/watched?type=${type}&page=${page}`,
       {
         method: 'GET',
         headers: {
@@ -24,10 +24,10 @@ export const fetchWatched = async (loginToken, page) => {
   }
 };
 
-export const fetchLikes = async (loginToken, page) => {
+export const fetchLikes = async (loginToken, type, page) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/likes?page=${page}`,
+      `http://localhost:8080/user/likes?type=${type}&page=${page}`,
       {
         method: 'GET',
         headers: {
@@ -50,10 +50,10 @@ export const fetchLikes = async (loginToken, page) => {
   }
 };
 
-export const fetchWatchlist = async (loginToken, page) => {
+export const fetchWatchlist = async (loginToken, type, page) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watchlist?page=${page}`,
+      `http://localhost:8080/user/watchlist?type=${type}&page=${page}`,
       {
         method: 'GET',
         headers: {

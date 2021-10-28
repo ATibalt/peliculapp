@@ -35,8 +35,10 @@ const UserContent = (props) => {
 
   const {
     isLoading,
-    currentPage,
-    totalPages,
+    currentMoviePage,
+    currentTvPage,
+    totalMoviePages,
+    totalTvPages,
     display,
     genresList,
     showMovies,
@@ -74,68 +76,81 @@ const UserContent = (props) => {
     };
   }, [getMovieGenres]);
 
-  const getList = useCallback(
-    async (pageNum = 1) => {
-      let list;
-      if (isWatchlist) {
-        list = await fetchWatchlist(loginToken, pageNum);
-      } else if (isLikes) {
-        list = await fetchLikes(loginToken, pageNum);
-      } else if (isWatched) {
-        list = await fetchWatched(loginToken, pageNum);
-      }
+  const getList = useCallback(async () => {
+    let list;
+    const type = showMovies ? 'movie' : 'tv';
+    const pageNum = showMovies ? currentMoviePage : currentTvPage;
 
-      if (list.hasError) {
-        return list;
-      }
+    if (isWatchlist) {
+      list = await fetchWatchlist(loginToken, type, pageNum);
+    } else if (isLikes) {
+      list = await fetchLikes(loginToken, type, pageNum);
+    } else if (isWatched) {
+      list = await fetchWatched(loginToken, type, pageNum);
+    }
 
-      const movies = list.results.filter((item) => item.type === 'movie');
-      const tv = list.results.filter((item) => item.type === 'tv');
+    if (list.hasError) {
+      return list;
+    }
 
+    if (showMovies) {
       const moviesWithData = await Promise.all(
-        movies.map(async (item) => {
+        list.results.map(async (item) => {
           const data = await fetchSimpleMovieData(item.id);
           return data;
         })
       );
-      const tvWithData = await Promise.all(
-        tv.map(async (item) => {
-          const data = await fetchSimpleTvData(item.id);
-          return data;
-        })
-      );
-
       return {
         movies: moviesWithData,
-        tv: tvWithData,
         totalPages: list.total_pages
       };
-    },
-    [loginToken, isLikes, isWatched, isWatchlist]
-  );
+    }
+    const tvWithData = await Promise.all(
+      list.results.map(async (item) => {
+        const data = await fetchSimpleTvData(item.id);
+        return data;
+      })
+    );
+    return {
+      tv: tvWithData,
+      totalPages: list.total_pages
+    };
+  }, [
+    loginToken,
+    isLikes,
+    isWatched,
+    isWatchlist,
+    showMovies,
+    currentMoviePage,
+    currentTvPage
+  ]);
 
   useEffect(() => {
     let isSubscribed = true;
     if (isLogedIn) {
-      getList(currentPage).then((res) => {
+      getList().then((res) => {
         if (res.hasError) {
           dispatchContent({ type: 'SET_ERROR', payload: res });
         }
         if (isSubscribed && !res.hasError) {
-          dispatchContent({ type: 'SET_CONTENT', payload: res });
+          if (showMovies) {
+            dispatchContent({ type: 'SET_MOVIES', payload: res });
+          } else {
+            dispatchContent({ type: 'SET_TV', payload: res });
+          }
         }
       });
     }
     return () => {
       isSubscribed = false;
     };
-  }, [getList, isLogedIn, hasError, currentPage]);
+  }, [getList, isLogedIn, showMovies]);
 
   useEffect(
     () => () => {
       dispatchContent({ type: 'RESET_STATE' });
     },
-    [isLikes, isWatched, isWatchlist]
+    [isLikes, isWatched, isWatchlist, showMovies]
   );
 
   const typeTogglerHandler = () => {
@@ -153,8 +168,12 @@ const UserContent = (props) => {
   };
 
   const loadMoreHandler = () => {
-    if (currentPage + 1 <= totalPages) {
-      dispatchContent({ type: 'INCREASE_PAGE' });
+    if (showMovies) {
+      if (currentMoviePage + 1 <= totalMoviePages) {
+        dispatchContent({ type: 'INCREASE_MOVIE_PAGE' });
+      }
+    } else if (currentTvPage + 1 <= totalTvPages) {
+      dispatchContent({ type: 'INCREASE_TV_PAGE' });
     }
   };
 
@@ -207,17 +226,34 @@ const UserContent = (props) => {
               />
             </div>
           </div>
-          <button
-            type="button"
-            onClick={loadMoreHandler}
-            className={`${styles.search__more} ${
-              currentPage === totalPages && styles['search__more--disabled']
-            }`}
-          >
-            {currentPage === totalPages
-              ? 'Se han cargado todos los resultados'
-              : 'Cargar más resultados'}
-          </button>
+          {showMovies && (
+            <button
+              type="button"
+              onClick={loadMoreHandler}
+              className={`${styles.search__more} ${
+                currentMoviePage === totalMoviePages &&
+                styles['search__more--disabled']
+              }`}
+            >
+              {currentMoviePage === totalMoviePages
+                ? 'Se han cargado todos los resultados'
+                : 'Cargar más resultados'}
+            </button>
+          )}
+          {!showMovies && (
+            <button
+              type="button"
+              onClick={loadMoreHandler}
+              className={`${styles.search__more} ${
+                currentTvPage === totalTvPages &&
+                styles['search__more--disabled']
+              }`}
+            >
+              {currentTvPage === totalTvPages
+                ? 'Se han cargado todos los resultados'
+                : 'Cargar más resultados'}
+            </button>
+          )}
         </div>
         {!hasError && (
           <div className={styles.content__grid}>
