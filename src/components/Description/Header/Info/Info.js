@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPlay,
-  faThumbsUp,
-  faEye,
-  faClock
-} from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
 
 import styles from './Info.module.css';
@@ -23,10 +16,19 @@ import {
 } from '../../../../utils/API/backend-api-requests';
 
 const Info = (props) => {
-  const { id, type, title, release, rating, runtime, votes, trailer } = props;
-  const [isWatched, setIsWatched] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isWatchlist, setIsWatchlist] = useState(false);
+  const { id, type, title, release, rating, runtime, votes } = props;
+  const [isWatched, setIsWatched] = useState({
+    hasError: false,
+    exists: false
+  });
+  const [isLiked, setIsLiked] = useState({
+    hasError: false,
+    exists: false
+  });
+  const [isWatchlist, setIsWatchlist] = useState({
+    hasError: false,
+    exists: false
+  });
 
   const isLogedIn = useSelector((state) => state.auth.isLogedIn);
   const loginToken = useSelector((state) => state.auth.loginToken);
@@ -34,29 +36,38 @@ const Info = (props) => {
   const fetchWatched = useCallback(async () => {
     const watched = await getWatchedById(loginToken, type, id);
 
-    const data = {
-      ...watched
-    };
-
-    return data;
+    if (!watched.hasError) {
+      const data = {
+        ...watched
+      };
+      return data;
+    }
+    return watched;
   }, [loginToken, type, id]);
+
   const fetchLikes = useCallback(async () => {
     const like = await getLikeById(loginToken, type, id);
 
-    const data = {
-      ...like
-    };
+    if (!like.hasError) {
+      const data = {
+        ...like
+      };
+      return data;
+    }
 
-    return data;
+    return like;
   }, [loginToken, type, id]);
+
   const fetchWatchlist = useCallback(async () => {
-    const like = await getWatchlistById(loginToken, type, id);
+    const watchlist = await getWatchlistById(loginToken, type, id);
 
-    const data = {
-      ...like
-    };
-
-    return data;
+    if (!watchlist.hasError) {
+      const data = {
+        ...watchlist
+      };
+      return data;
+    }
+    return watchlist;
   }, [loginToken, type, id]);
 
   useEffect(() => {
@@ -64,53 +75,72 @@ const Info = (props) => {
     if (isLogedIn) {
       fetchWatched().then((res) => {
         if (isSubscribed) {
-          setIsWatched(res.exists);
+          if (!res.hasError) {
+            setIsWatched({ hasError: false, exists: res.exists });
+          } else {
+            setIsWatched({ hasError: true, exists: false });
+          }
         }
       });
     }
-
     return () => {
       isSubscribed = false;
     };
-  }, [fetchWatched, isWatched, isLogedIn]);
+  }, [fetchWatched, isWatched.exists, isLogedIn]);
+
   useEffect(() => {
     let isSubscribed = true;
     if (isLogedIn) {
       fetchLikes().then((res) => {
         if (isSubscribed) {
-          setIsLiked(res.exists);
+          if (!res.hasError) {
+            setIsLiked({ hasError: false, exists: res.exists });
+          } else {
+            setIsLiked({ hasError: true, exists: false });
+          }
         }
       });
     }
-
     return () => {
       isSubscribed = false;
     };
-  }, [fetchLikes, isLiked, isLogedIn]);
+  }, [fetchLikes, isLiked.exists, isLogedIn]);
+
   useEffect(() => {
     let isSubscribed = true;
     if (isLogedIn) {
       fetchWatchlist().then((res) => {
         if (isSubscribed) {
-          setIsWatchlist(res.exists);
+          if (!res.hasError) {
+            setIsWatchlist({ hasError: false, exists: res.exists });
+          } else {
+            setIsWatchlist({ hasError: true, exists: false });
+          }
         }
       });
     }
-
     return () => {
       isSubscribed = false;
     };
-  }, [fetchWatchlist, isWatchlist, isLogedIn]);
+  }, [fetchWatchlist, isWatchlist.exists, isLogedIn]);
 
   const toggleWatchedHandler = () => {
     if (isLogedIn) {
       if (isWatched) {
-        deleteWatched(loginToken, type, id).then(() => {
-          setIsWatched(false);
+        deleteWatched(loginToken, type, id).then((res) => {
+          if (!res.hasError) {
+            setIsWatched({ hasError: false, exists: res.exists });
+          } else {
+            setIsWatched({ hasError: true, exists: false });
+          }
         });
       } else {
-        postWatched(loginToken, type, id).then(() => {
-          setIsWatched(true);
+        postWatched(loginToken, type, id).then((res) => {
+          if (!res.hasError) {
+            setIsWatched({ hasError: false, exists: res.exists });
+          } else {
+            setIsWatched({ hasError: true, exists: false });
+          }
         });
       }
     }
@@ -118,12 +148,16 @@ const Info = (props) => {
   const toggleLikeHandler = () => {
     if (isLogedIn) {
       if (isLiked) {
-        deleteLike(loginToken, type, id).then(() => {
-          setIsLiked(false);
+        deleteLike(loginToken, type, id).then((res) => {
+          if (!res.hasError) {
+            setIsLiked(false);
+          }
         });
       } else {
-        postLike(loginToken, type, id).then(() => {
-          setIsLiked(true);
+        postLike(loginToken, type, id).then((res) => {
+          if (!res.hasError) {
+            setIsLiked(true);
+          }
         });
       }
     }
@@ -131,12 +165,16 @@ const Info = (props) => {
   const toggleWatchlistHandler = () => {
     if (isLogedIn) {
       if (isWatchlist) {
-        deleteWatchlist(loginToken, type, id).then(() => {
-          setIsWatchlist(false);
+        deleteWatchlist(loginToken, type, id).then((res) => {
+          if (!res.hasError) {
+            setIsWatchlist(false);
+          }
         });
       } else {
-        postWatchlist(loginToken, type, id).then(() => {
-          setIsWatchlist(true);
+        postWatchlist(loginToken, type, id).then((res) => {
+          if (!res.hasError) {
+            setIsWatchlist(true);
+          }
         });
       }
     }
@@ -152,17 +190,6 @@ const Info = (props) => {
       </div>
       {votes !== 0 && <span>{votes}% · TMDB User Score</span>}
       <div className={styles.actions}>
-        <a
-          className={`${styles.actions__watchTrailer} ${
-            !trailer[0] && styles['actions__watchTrailer--disabled']
-          }`}
-          href={trailer[1]}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <FontAwesomeIcon icon={faPlay} />
-          <span>Trailer</span>
-        </a>
         <div
           className={`${styles.actions__add} ${
             !isLogedIn && styles['actions__add--disabled']
@@ -171,29 +198,50 @@ const Info = (props) => {
           <button
             type="button"
             className={`${styles.actions__button} ${
-              isWatched && styles['actions__button--active']
-            }`}
+              isWatched.exists && styles['actions__button--active']
+            } ${isWatched.hasError && styles['actions__button--error']}`}
             onClick={toggleWatchedHandler}
           >
-            <FontAwesomeIcon icon={faEye} />
+            {!isWatched.hasError && (
+              <span>
+                {isWatched.exists
+                  ? 'Ya has visto esta película'
+                  : 'Marcar como vista'}
+              </span>
+            )}
+            {isWatched.hasError && <span>Error al contactar al servidor</span>}
           </button>
           <button
             type="button"
             className={`${styles.actions__button} ${
-              isLiked && styles['actions__button--active']
-            }`}
+              isLiked.exists && styles['actions__button--active']
+            } ${isLiked.hasError && styles['actions__button--error']}`}
             onClick={toggleLikeHandler}
           >
-            <FontAwesomeIcon icon={faThumbsUp} />
+            {!isLiked.hasError && (
+              <span>
+                {isLiked.exists ? 'Ya la has likeado' : 'Likear esta película'}
+              </span>
+            )}
+            {isLiked.hasError && <span>Error al contactar al servidor</span>}
           </button>
           <button
             type="button"
             className={`${styles.actions__button} ${
-              isWatchlist && styles['actions__button--active']
-            }`}
+              isWatchlist.exists && styles['actions__button--active']
+            } ${isWatchlist.hasError && styles['actions__button--error']}`}
             onClick={toggleWatchlistHandler}
           >
-            <FontAwesomeIcon icon={faClock} />
+            {!isWatchlist.hasError && (
+              <span>
+                {isWatchlist.exists
+                  ? 'Ya está en tu watchlist'
+                  : 'Agregar a watchlist'}
+              </span>
+            )}
+            {isWatchlist.hasError && (
+              <span>Error al contactar al servidor</span>
+            )}
           </button>
         </div>
       </div>
@@ -208,8 +256,7 @@ Info.propTypes = {
   release: PropTypes.string,
   rating: PropTypes.string,
   runtime: PropTypes.string,
-  votes: PropTypes.number,
-  trailer: PropTypes.arrayOf(PropTypes.any)
+  votes: PropTypes.number
 };
 
 Info.defaultProps = {
@@ -219,8 +266,7 @@ Info.defaultProps = {
   release: '',
   rating: '',
   runtime: '',
-  votes: 0,
-  trailer: []
+  votes: 0
 };
 
 export default Info;

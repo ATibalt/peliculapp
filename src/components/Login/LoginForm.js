@@ -143,33 +143,41 @@ const LoginForm = (props) => {
           })
         );
       } else {
-        const response = await fetch('http://localhost:8080/auth/signup', {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: emailState.value,
-            emailConf: emailConfState.value,
-            password: passwordState.value,
-            passwordConf: passwordConfState.value
-          })
-        });
-        const data = await response.json();
-
-        if (response.status === 201) {
-          setStatusMsgState({
-            show: true,
-            isError: false,
-            msg: data.message
+        try {
+          const response = await fetch('http://localhost:8080/auth/signup', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: emailState.value,
+              emailConf: emailConfState.value,
+              password: passwordState.value,
+              passwordConf: passwordConfState.value
+            })
           });
-          history.push('/login');
-        }
-        if (response.status === 422) {
+          const data = await response.json();
+
+          if (response.status === 201) {
+            setStatusMsgState({
+              show: true,
+              isError: false,
+              msg: data.message
+            });
+            history.push('/login');
+          }
+          if (response.status === 422) {
+            setStatusMsgState({
+              show: true,
+              isError: true,
+              msg: data.data[0].msg
+            });
+          }
+        } catch (error) {
           setStatusMsgState({
             show: true,
             isError: true,
-            msg: data.data[0].msg
+            msg: error.message
           });
         }
       }

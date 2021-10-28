@@ -28,9 +28,9 @@ export const login = createAsyncThunk(
         return data;
       }
 
-      return thunkAPI.rejectWithValue(data);
+      return thunkAPI.rejectWithValue(data.message);
     } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data);
+      return thunkAPI.rejectWithValue(err.message);
     }
   }
 );
@@ -72,7 +72,7 @@ export const authSlice = createSlice({
     },
     [login.rejected]: (state, { payload }) => {
       state.status = 'failed';
-      state.errorMsg = payload.message;
+      state.errorMsg = payload;
     }
   }
 });

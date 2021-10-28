@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, useReducer } from 'react';
 import PosterHolder from '../../components/UI/Carousel/PosterHolder/PosterHolder';
 import { fetchMultiSearch } from '../../utils/API/api-requests';
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 
 import styles from './Search.module.css';
 
@@ -13,7 +14,9 @@ const INITIAL_STATE = {
   display: [],
   searchPage: 1,
   totalPages: undefined,
-  showMovies: true
+  showMovies: true,
+  hasError: false,
+  message: ''
 };
 
 function deleteDuplicated(content) {
@@ -30,17 +33,17 @@ function contentReducer(state, action) {
     case 'SET_MOVIES': {
       const movies = action.payload;
       const newArray = deleteDuplicated([...state.movieList, ...movies]);
-      return { ...state, movieList: newArray };
+      return { ...state, hasError: false, message: '', movieList: newArray };
     }
     case 'SET_TV': {
       const tv = action.payload;
       const newArray = deleteDuplicated([...state.tvList, ...tv]);
-      return { ...state, tvList: newArray };
+      return { ...state, hasError: false, message: '', tvList: newArray };
     }
     case 'SET_PEOPLE': {
       const people = action.payload;
       const newArray = deleteDuplicated([...state.peopleList, ...people]);
-      return { ...state, peopleList: newArray };
+      return { ...state, hasError: false, message: '', peopleList: newArray };
     }
     case 'SET_DISPLAY': {
       let newDisplay = [];
@@ -70,6 +73,13 @@ function contentReducer(state, action) {
     case 'SET_PAGE': {
       return { ...state, searchPage: action.payload };
     }
+    case 'SET_ERROR': {
+      return {
+        ...INITIAL_STATE,
+        hasError: true,
+        message: action.payload
+      };
+    }
     case 'RESET_STATE': {
       return { ...INITIAL_STATE };
     }
@@ -96,43 +106,70 @@ const Search = () => {
     type,
     movieList,
     tvList,
-    peopleList
+    peopleList,
+    hasError,
+    message
   } = searchState;
 
   const fetchSearch = useCallback(async (searchValue, pageValue) => {
     const searchData = await fetchMultiSearch(searchValue, pageValue);
-    const results = [...searchData.results];
+    if (!searchData.hasError) {
+      const results = [...searchData.results];
 
-    const searchResults = {
-      movies: [],
-      tv: [],
-      people: []
-    };
+      const searchResults = {
+        movies: [],
+        tv: [],
+        people: []
+      };
 
-    if (results) {
-      searchResults.movies = results.filter(
-        (item) => item.media_type === 'movie'
-      );
-      searchResults.tv = results.filter((item) => item.media_type === 'tv');
-      searchResults.people = results.filter(
-        (item) => item.media_type === 'person'
-      );
+      if (results) {
+        searchResults.movies = results.filter(
+          (item) => item.media_type === 'movie'
+        );
+        searchResults.tv = results.filter((item) => item.media_type === 'tv');
+        searchResults.people = results.filter(
+          (item) => item.media_type === 'person'
+        );
+      }
+
+      const response = {
+        searchResults,
+        totalPages: searchData.total_pages
+      };
+
+      return response;
     }
-
-    searchDispatch({ type: 'SET_MOVIES', payload: searchResults.movies });
-    searchDispatch({ type: 'SET_TV', payload: searchResults.tv });
-    searchDispatch({ type: 'SET_PEOPLE', payload: searchResults.people });
-
-    return searchData.total_pages;
+    return searchData;
   }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchInput.trim().length !== 0) {
-        fetchSearch(searchInput, searchPage).then((tp) => {
-          searchDispatch({ type: 'SET_TOTAL_PAGES', payload: tp });
-          searchDispatch({ type: 'UPDATE_DISPLAY' });
-          setShowBadges(true);
+        fetchSearch(searchInput, searchPage).then((response) => {
+          if (response.hasError) {
+            searchDispatch({
+              type: 'SET_ERROR',
+              payload: response.message
+            });
+          } else {
+            searchDispatch({
+              type: 'SET_MOVIES',
+              payload: response.searchResults.movies
+            });
+            searchDispatch({
+              type: 'SET_TV',
+              payload: response.searchResults.tv
+            });
+            searchDispatch({
+              type: 'SET_PEOPLE',
+              payload: response.searchResults.people
+            });
+            searchDispatch({
+              type: 'SET_TOTAL_PAGES',
+              payload: response.totalPages
+            });
+            setShowBadges(true);
+          }
         });
       } else {
         setShowBadges(false);
@@ -259,19 +296,22 @@ const Search = () => {
             : 'Cargar más resultados'}
         </button>
       </div>
-      <div className={styles.search__searchResults}>
-        {display.length > 0 ? (
-          <>
-            {display.map((item) => (
-              <PosterHolder item={item} key={item.id} isSearch />
-            ))}
-          </>
-        ) : (
-          <>
-            <h3 className={styles.search__notFoundMsg}>{notFoundMsg}</h3>
-          </>
-        )}
-      </div>
+      {!hasError && (
+        <div className={styles.search__searchResults}>
+          {display.length > 0 ? (
+            <>
+              {display.map((item) => (
+                <PosterHolder item={item} key={item.id} isSearch />
+              ))}
+            </>
+          ) : (
+            <>
+              <h3 className={styles.search__notFoundMsg}>{notFoundMsg}</h3>
+            </>
+          )}
+        </div>
+      )}
+      {hasError && <ErrorMessage message={message} isSmall />}
     </main>
   );
 };

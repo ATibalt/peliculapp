@@ -6,70 +6,127 @@ import {
   fetchPopularTV,
   fetchUpcomingMovies
 } from '../../utils/API/api-requests';
-// import PropTypes from 'prop-types'
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 
 import styles from './Home.module.css';
 
+const INITIAL_STATE = {
+  isLoading: true,
+  hasError: false,
+  content: [],
+  errorMessage: undefined
+};
+
 const Home = () => {
   const [heroIsLoading, setHeroIsLoading] = useState(true);
-  const [moviesLoading, setMoviesLoading] = useState(true);
   const [topContent, setTopContent] = useState({
-    type: ['Películas', 'TV'],
+    type: [],
+    isLoading: true,
     img: [],
     title: []
   });
   const [showLoader, setShowLoader] = useState(true);
-  const [topContentIndex, setTopContentIndex] = useState(0);
-  const [popularMovies, setPopularMovies] = useState([]);
-  const [popularTv, setPopularTv] = useState([]);
-  const [onTheatres, setOnTheatres] = useState([]);
-  const [upcomingMovies, setUpcomingMovies] = useState([]);
+  const [topContentIndex, setTopContentIndex] = useState({
+    currentIndex: 0,
+    maxIndex: undefined
+  });
 
-  const getPopularMovies = useCallback(async () => {
+  const [popularMoviesAux, setPopularMoviesAux] = useState({
+    ...INITIAL_STATE
+  });
+  const [popularTvAux, setPopularTvAux] = useState({ ...INITIAL_STATE });
+  const [onTheatresAux, setOnTheatresAux] = useState({ ...INITIAL_STATE });
+  const [upcomingMoviesAux, setUpcomingMoviesAux] = useState({
+    ...INITIAL_STATE
+  });
+
+  const getPopularContentAux = useCallback(async () => {
     const popMovies = await fetchPopularMovies();
     const popTv = await fetchPopularTV();
     const theatresMovs = await fetchOnTheatresMovies();
     const upcoming = await fetchUpcomingMovies();
 
     const result = {
-      popMovies: [...popMovies.results],
-      popTv: [...popTv.results],
-      theatresMovs: [...theatresMovs.results],
-      upcoming: [...upcoming.results]
+      popMovies,
+      popTv,
+      theatresMovs,
+      upcoming
     };
 
     return result;
   }, []);
 
+  const setStates = useCallback((results, setFunc) => {
+    if (results.hasError) {
+      setFunc({
+        ...INITIAL_STATE,
+        isLoading: false,
+        hasError: true,
+        errorMessage: results.message
+      });
+    } else {
+      setFunc({
+        ...INITIAL_STATE,
+        isLoading: false,
+        content: results.results
+      });
+    }
+  }, []);
+
   useEffect(() => {
     let isSubscribed = true;
-    getPopularMovies().then((results) => {
+
+    getPopularContentAux().then((results) => {
       if (isSubscribed) {
-        const topImg = [
-          results.popMovies[0].backdrop_path,
-          results.popTv[0].backdrop_path
-        ];
-        const topTitle = [results.popMovies[0].title, results.popTv[0].name];
-        setTopContent((prevState) => ({
-          ...prevState,
-          img: topImg,
-          title: topTitle
-        }));
-        setPopularMovies([...results.popMovies]);
-        setPopularTv([...results.popTv]);
-        setOnTheatres([...results.theatresMovs]);
-        setUpcomingMovies([...results.upcoming]);
-        setMoviesLoading(false);
+        setStates(results.popMovies, setPopularMoviesAux);
+        setStates(results.popTv, setPopularTvAux);
+        setStates(results.theatresMovs, setOnTheatresAux);
+        setStates(results.upcoming, setUpcomingMoviesAux);
+
+        if (!results.popMovies.hasError || !results.popTv.hasError) {
+          const topType = [];
+          const topImg = [];
+          const topTitle = [];
+
+          if (!results.popMovies.hasError) {
+            topType.push('Películas');
+            topImg.push(results.popMovies.results[0].backdrop_path);
+            topTitle.push(results.popMovies.results[0].title);
+          }
+          if (!results.popTv.hasError) {
+            topType.push('TV');
+            topImg.push(results.popTv.results[0].backdrop_path);
+            topTitle.push(results.popTv.results[0].name);
+          }
+
+          setTopContent((prevState) => ({
+            ...prevState,
+            isLoading: false,
+            type: topType,
+            img: topImg,
+            title: topTitle
+          }));
+          setTopContentIndex((prevState) => ({
+            ...prevState,
+            maxIndex: topImg.length - 1
+          }));
+        }
       }
     });
     return () => {
       isSubscribed = false;
     };
-  }, [getPopularMovies]);
+  }, [getPopularContentAux, setStates]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTopContentIndex((prevState) => (prevState === 0 ? 1 : 0));
+      setTopContentIndex((prevState) => ({
+        ...prevState,
+        currentIndex:
+          prevState.currentIndex + 1 > prevState.maxIndex
+            ? 0
+            : prevState.currentIndex + 1
+      }));
       setShowLoader(false);
     }, 10000);
     return () => {
@@ -79,44 +136,68 @@ const Home = () => {
   }, [topContentIndex]);
 
   return (
-    <main>
-      <div
-        className={`${styles.homeHero} ${
-          heroIsLoading && styles['homeHero--isLoading']
-        }`}
-      >
-        {!moviesLoading && (
-          <>
-            <img
-              src={`https://image.tmdb.org/t/p/original/${topContent.img[topContentIndex]}`}
-              alt={topContent.title[topContentIndex]}
-              onLoad={() => setHeroIsLoading(false)}
-            />
-            <div className={styles.homeHero__title}>
-              <span>#1 en {topContent.type[topContentIndex]} esta semana</span>
-              <span>{topContent.title[topContentIndex]}</span>
-              {showLoader && <div className={styles.homeHero__loader} />}
-            </div>
-          </>
-        )}
-      </div>
-      {!moviesLoading && (
-        <>
-          <Carousel
-            title="Las películas más populares"
-            content={popularMovies}
-          />
-          <Carousel title="Las series más populares" content={popularTv} />
-          <Carousel title="Actualmente en cines" content={onTheatres} />
-          <Carousel title="Próximos estrenos" content={upcomingMovies} />
-        </>
+    <main className={styles.main}>
+      {(!popularMoviesAux.hasError || !popularTvAux.hasError) && (
+        <div
+          className={`${styles.hero} ${
+            heroIsLoading && styles['hero--isLoading']
+          }`}
+        >
+          {!topContent.isLoading && (
+            <>
+              <img
+                src={`https://image.tmdb.org/t/p/original/${
+                  topContent.img[topContentIndex.currentIndex]
+                }`}
+                alt={topContent.title[topContentIndex.currentIndex]}
+                onLoad={() => setHeroIsLoading(false)}
+              />
+              <div className={styles.hero__title}>
+                <span>
+                  #1 en {topContent.type[topContentIndex.currentIndex]} esta
+                  semana
+                </span>
+                <span>{topContent.title[topContentIndex.currentIndex]}</span>
+                {showLoader && topContentIndex.maxIndex !== 0 && (
+                  <div className={styles.hero__loader} />
+                )}
+              </div>
+            </>
+          )}
+        </div>
       )}
+      {!popularMoviesAux.isLoading && !popularMoviesAux.hasError && (
+        <Carousel
+          title="Las películas más populares"
+          content={popularMoviesAux.content}
+        />
+      )}
+      {!popularTvAux.isLoading && !popularTvAux.hasError && (
+        <Carousel
+          title="Las series más populares"
+          content={popularTvAux.content}
+        />
+      )}
+      {!onTheatresAux.isLoading && !onTheatresAux.hasError && (
+        <Carousel
+          title="Actualmente en cines"
+          content={onTheatresAux.content}
+        />
+      )}
+      {!upcomingMoviesAux.isLoading && !upcomingMoviesAux.hasError && (
+        <Carousel
+          title="Próximos estrenos"
+          content={upcomingMoviesAux.content}
+        />
+      )}
+      {popularMoviesAux.hasError &&
+        popularTvAux.hasError &&
+        onTheatresAux.hasError &&
+        upcomingMoviesAux.hasError && (
+          <ErrorMessage message={popularMoviesAux.errorMessage} />
+        )}
     </main>
   );
 };
-
-// Home.propTypes = {
-
-// }
 
 export default Home;

@@ -18,6 +18,7 @@ import {
 
 import PosterHolder from '../../components/UI/Carousel/PosterHolder/PosterHolder';
 import ContentFilters from '../../components/ContentFilters/ContentFilters';
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 import filterArray from '../../utils/Filter/array-filter';
 
 import styles from './UserContent.module.css';
@@ -30,7 +31,9 @@ const INITIAL_STATE = {
   filters: {},
   isListFiltered: false,
   genresList: [],
-  showMovies: true
+  showMovies: true,
+  hasError: false,
+  errorMessage: ''
 };
 
 function contentReducer(state, action) {
@@ -41,6 +44,8 @@ function contentReducer(state, action) {
       return {
         ...state,
         isLoading: false,
+        hasError: false,
+        errorMessage: '',
         movieList: fetchedMovies,
         tvList: fetchedTv,
         display: state.showMovies ? fetchedMovies : fetchedTv
@@ -93,6 +98,14 @@ function contentReducer(state, action) {
         genresList: fetchedGenres
       };
     }
+    case 'SET_ERROR': {
+      return {
+        ...INITIAL_STATE,
+        isLoading: false,
+        hasError: action.payload.hasError,
+        errorMessage: action.payload.message
+      };
+    }
     default:
       return {
         ...state
@@ -110,8 +123,15 @@ const UserContent = (props) => {
     INITIAL_STATE
   );
 
-  const { isLoading, display, genresList, showMovies, isListFiltered } =
-    contentState;
+  const {
+    isLoading,
+    display,
+    genresList,
+    showMovies,
+    isListFiltered,
+    hasError,
+    errorMessage
+  } = contentState;
 
   const [showFilter, setShowFilter] = useState(false);
 
@@ -130,7 +150,11 @@ const UserContent = (props) => {
     let isSubscribed = true;
     getMovieGenres().then((res) => {
       if (isSubscribed) {
-        dispatchContent({ type: 'SET_GENRES', payload: res.genres });
+        if (!res.hasError) {
+          dispatchContent({ type: 'SET_GENRES', payload: res.genres });
+        } else {
+          dispatchContent({ type: 'SET_GENRES', payload: [] });
+        }
       }
     });
     return () => {
@@ -147,6 +171,10 @@ const UserContent = (props) => {
         list = await fetchLikes(loginToken);
       } else if (isWatched) {
         list = await fetchWatched(loginToken);
+      }
+
+      if (list.hasError) {
+        return list;
       }
 
       const movies = list.results.filter((item) => item.type === 'movie');
@@ -174,7 +202,10 @@ const UserContent = (props) => {
     let isSubscribed = true;
     if (isLogedIn) {
       getList().then((res) => {
-        if (isSubscribed) {
+        if (res.hasError) {
+          dispatchContent({ type: 'SET_ERROR', payload: res });
+        }
+        if (isSubscribed && !res.hasError) {
           dispatchContent({ type: 'SET_CONTENT', payload: res });
         }
       });
@@ -182,7 +213,7 @@ const UserContent = (props) => {
     return () => {
       isSubscribed = false;
     };
-  }, [getList, isLogedIn]);
+  }, [getList, isLogedIn, hasError]);
 
   const typeTogglerHandler = (event) => {
     dispatchContent({ type: 'TOGGLE_CONTENT' });
@@ -248,25 +279,33 @@ const UserContent = (props) => {
             </div>
           </div>
         </div>
-        <div className={styles.content__grid}>
-          {!isLoading &&
-            display.length > 0 &&
-            display.map((movie) => (
-              <PosterHolder item={movie} key={movie.id} />
-            ))}
-          {!isLoading && display.length === 0 && isListFiltered && (
-            <h3 className={styles.msgText}>
-              Ninguna {showMovies ? 'película' : 'serie'} de esta lista coincide
-              con los filtros ingresados
-            </h3>
-          )}
-          {!isLoading && display.length === 0 && !isListFiltered && (
-            <h3 className={styles.msgText}>
-              Todavía no has agregado {showMovies ? 'películas' : 'series'} a
-              esta lista
-            </h3>
-          )}
-        </div>
+        {!hasError && (
+          <div className={styles.content__grid}>
+            {!isLoading &&
+              display.length > 0 &&
+              display.map((movie) => (
+                <PosterHolder item={movie} key={movie.id} />
+              ))}
+            {!isLoading && display.length === 0 && isListFiltered && (
+              <h3 className={styles.msgText}>
+                Ninguna {showMovies ? 'película' : 'serie'} de esta lista
+                coincide con los filtros ingresados
+              </h3>
+            )}
+            {!isLoading &&
+              display.length === 0 &&
+              !isListFiltered &&
+              !hasError && (
+                <h3 className={styles.msgText}>
+                  Todavía no has agregado {showMovies ? 'películas' : 'series'}{' '}
+                  a esta lista
+                </h3>
+              )}
+          </div>
+        )}
+        {!isLoading && hasError && (
+          <ErrorMessage message={errorMessage} isSmall />
+        )}
       </div>
     </main>
   );

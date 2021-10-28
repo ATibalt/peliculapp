@@ -73,10 +73,6 @@
   grid-template-columns: repeat(auto-fill, minmax(min(175px, 100%), 1fr));
 }
 
-.content__grid > a {
-  width: 100%;
-}
-
 .msgText {
   grid-column: 1 / span end;
   text-align: center;
