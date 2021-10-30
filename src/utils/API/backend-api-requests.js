@@ -1,7 +1,9 @@
+const { REACT_APP_BACKEND_URL } = process.env;
+
 export const fetchWatched = async (loginToken, type, page) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watched?type=${type}&page=${page}`,
+      `${REACT_APP_BACKEND_URL}/user/watched?type=${type}&page=${page}`,
       {
         method: 'GET',
         headers: {
@@ -27,7 +29,7 @@ export const fetchWatched = async (loginToken, type, page) => {
 export const fetchLikes = async (loginToken, type, page) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/likes?type=${type}&page=${page}`,
+      `${REACT_APP_BACKEND_URL}/user/likes?type=${type}&page=${page}`,
       {
         method: 'GET',
         headers: {
@@ -53,7 +55,7 @@ export const fetchLikes = async (loginToken, type, page) => {
 export const fetchWatchlist = async (loginToken, type, page) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watchlist?type=${type}&page=${page}`,
+      `${REACT_APP_BACKEND_URL}/user/watchlist?type=${type}&page=${page}`,
       {
         method: 'GET',
         headers: {
@@ -79,7 +81,7 @@ export const fetchWatchlist = async (loginToken, type, page) => {
 export const getWatchedById = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watched/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/watched/${type}/${id}`,
       {
         method: 'GET',
         headers: {
@@ -105,7 +107,7 @@ export const getWatchedById = async (loginToken, type, id) => {
 export const getLikeById = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/likes/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/likes/${type}/${id}`,
       {
         method: 'GET',
         headers: {
@@ -130,7 +132,7 @@ export const getLikeById = async (loginToken, type, id) => {
 export const getWatchlistById = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watchlist/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/watchlist/${type}/${id}`,
       {
         method: 'GET',
         headers: {
@@ -156,7 +158,7 @@ export const getWatchlistById = async (loginToken, type, id) => {
 export const postWatched = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watched/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/watched/${type}/${id}`,
       {
         method: 'POST',
         headers: {
@@ -182,7 +184,7 @@ export const postWatched = async (loginToken, type, id) => {
 export const postLike = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/likes/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/likes/${type}/${id}`,
       {
         method: 'POST',
         headers: {
@@ -208,7 +210,7 @@ export const postLike = async (loginToken, type, id) => {
 export const postWatchlist = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watchlist/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/watchlist/${type}/${id}`,
       {
         method: 'POST',
         headers: {
@@ -234,7 +236,7 @@ export const postWatchlist = async (loginToken, type, id) => {
 export const deleteWatched = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watched/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/watched/${type}/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -260,7 +262,7 @@ export const deleteWatched = async (loginToken, type, id) => {
 export const deleteLike = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/likes/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/likes/${type}/${id}`,
       {
         method: 'DELETE',
         headers: {
@@ -286,7 +288,7 @@ export const deleteLike = async (loginToken, type, id) => {
 export const deleteWatchlist = async (loginToken, type, id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/user/watchlist/${type}/${id}`,
+      `${REACT_APP_BACKEND_URL}/user/watchlist/${type}/${id}`,
       {
         method: 'DELETE',
         headers: {

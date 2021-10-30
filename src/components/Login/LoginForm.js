@@ -12,6 +12,8 @@ import {
 
 import styles from './LoginForm.module.css';
 
+const { REACT_APP_BACKEND_URL } = process.env;
+
 const INITIAL_STATE = {
   value: '',
   isValid: false,
@@ -144,7 +146,7 @@ const LoginForm = (props) => {
         );
       } else {
         try {
-          const response = await fetch('http://localhost:8080/auth/signup', {
+          const response = await fetch(`${REACT_APP_BACKEND_URL}/auth/signup`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json'
