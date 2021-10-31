@@ -1,0 +1,87 @@
+.main {
+  min-height: 100vh;
+}
+.hero {
+  height: 85vh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(307deg, #898989, #343434);
+  background-size: 400% 400%;
+
+  -webkit-animation: SkeletonLoading 30s ease infinite;
+  -moz-animation: SkeletonLoading 30s ease infinite;
+  animation: SkeletonLoading 30s ease infinite;
+}
+.hero > img {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  height: max(85vh, 100vw * 0.5625);
+}
+.hero .hero__title{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: white;
+  padding: 15px 1.3rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%,rgba(0,0,0,.3) 25%, rgba(0,0,0,.7) 75%, rgba(0,0,0,1) 100%);
+}
+.hero__title > span:first-child {
+  font-size: 1.35rem;
+  font-weight: bold;
+}
+.hero__title > span:nth-child(2) {
+  font-size: 2rem;
+  font-weight: bolder;
+  margin-bottom: 10px;
+}
+
+.hero__title .hero__loader {
+  height: 3px;
+  background-color: red;
+  -webkit-animation: animatedBorder 10s infinite;
+  -moz-animation: animatedBorder 10s infinite;
+  animation: animatedBorder 10s infinite;
+}
+
+.error{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: grey;
+}
+
+@-webkit-keyframes SkeletonLoading {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@-moz-keyframes SkeletonLoading {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@keyframes SkeletonLoading {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+
+@-webkit-keyframes animatedBorder {
+  0%{width: 0}
+  100%{width: 100%}
+}
+@-moz-keyframes animatedBorder {
+  0%{width: 0}
+  100%{width: 100%}
+}
+@keyframes animatedBorder {
+  0%{width: 0}
+  100%{width: 100%}
+}

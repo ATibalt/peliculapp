@@ -1,0 +1,133 @@
+.header {
+  position: relative;
+  padding-top: 30px;
+  margin-bottom: 25px;
+}
+.header.header--lg{
+  padding-top: 100px;
+}
+.header .header__backdropCont {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  max-height: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(307deg, #898989, #343434);
+  background-size: 400% 400%;
+
+  -webkit-animation: SkeletonLoading 30s ease infinite;
+  -moz-animation: SkeletonLoading 30s ease infinite;
+  animation: SkeletonLoading 30s ease infinite;
+}
+.header__backdropCont--loading > .header__backdrop{
+  display: none;
+}
+.header .header__backdrop {
+  min-height: max(400px, 100vw  * 0.5625);
+  min-width: auto;
+  height: auto;
+}
+
+.header .header__info {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.3rem;
+  row-gap: 20px;
+}
+
+.header__visuals .header__posterCont {
+  width: 100%;
+  padding-top: calc(100% * 1.5);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(307deg, #898989, #343434);
+  background-size: 400% 400%;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+
+  -webkit-animation: SkeletonLoading 30s ease infinite;
+  -moz-animation: SkeletonLoading 30s ease infinite;
+  animation: SkeletonLoading 30s ease infinite;
+}
+
+.header__posterCont > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+.header__visuals .header__watchTrailer{
+  height: 40px;
+  margin-top: 15px;
+  background-color: red;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:white;
+  text-decoration: none;
+}
+.header__watchTrailer:visited {
+  color: white;
+}
+.header__watchTrailer> span {
+  margin-left: 10px;
+}
+
+.header__watchTrailer--disabled {
+  background-color: grey;
+  pointer-events: none;
+}
+
+.header .header__gradient {
+  position: absolute;
+  min-width: 100%;
+  height: 100%;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(0,0,0,1) 0%,rgba(0,0,0,.7) 35%, rgba(0,0,0,.3) 65%, rgba(0,0,0,0) 100%);
+}
+
+
+@-webkit-keyframes SkeletonLoading {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@-moz-keyframes SkeletonLoading {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@keyframes SkeletonLoading {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+
+
+@media only screen and (min-width: 400px) {
+  .header .header__info{
+    flex-direction: row;
+    column-gap: 1rem;
+    justify-content: flex-start;
+  }
+  .header__visuals {
+    width: min(50%, 250px);
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .header {
+    padding-top: 100px;
+  }
+}

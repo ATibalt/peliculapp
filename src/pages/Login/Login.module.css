@@ -1,0 +1,28 @@
+.loginMain {
+  width: 100vw;
+  min-height: 100vh;
+  padding: 2rem 2rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  color: white;
+}
+
+.loginHeader > h1 {
+  margin: 0;
+}
+
+.loginHeader__title {
+  margin-top: 40px;
+}
+
+.loginToggler {
+  margin-bottom: 25px;
+}
+
+@media only screen and (min-width: 768px) {
+  .loginMain {
+    padding: 75px 2rem 0 2rem;
+  }
+}

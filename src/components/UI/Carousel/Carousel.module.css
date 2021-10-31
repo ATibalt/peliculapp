@@ -1,0 +1,64 @@
+.contentCarousel {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  padding: 15px 1.3rem;
+  position: relative;
+}
+.contentCarousel > span {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.contentCarousel .contentCarousel__slider {
+  max-width: 100%;
+  position: relative;
+}
+
+.contentCarousel__arrow {
+  position: absolute;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  font-size: 1.3rem;
+  background-color: rgba(0,0,0,.5);
+  color: white;
+  border: none;
+  z-index: 10;
+}
+.contentCarousel__arrowLeft {
+  inset: 0;
+}
+.contentCarousel__arrowRight {
+  right: 0;
+  top: 0;
+}
+.contentCarousel__arrow:hover {
+  background-color: rgba(0,0,0,.8);
+  cursor: pointer;
+}
+
+.contentCarousel .contentCarousel__sliderMovies {
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  column-gap: 1rem;
+  transition: all .3s ease-out;
+  overflow-x: scroll;
+}
+
+.contentCarousel__posterCont {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .contentCarousel .contentCarousel__slider {
+    overflow-x: hidden;
+  }
+  .contentCarousel .contentCarousel__sliderMovies {
+    width: max-content;
+    overflow-x: hidden;
+  }
+}

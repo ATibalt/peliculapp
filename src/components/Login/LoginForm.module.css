@@ -1,0 +1,98 @@
+.loginForm {
+  width: min(100%, 500px);
+  padding: 0 1.35em;
+  margin-bottom: 15px;
+  margin-top: 25px;
+}
+
+.loginForm__inputContainer {
+  margin-bottom: 40px;
+  position: relative;
+}
+.loginForm__inputContainer > label {
+  position: absolute;
+  top: 24px;
+  left: 10px;
+  transform: translateY(-50%);
+  color: rgb(249, 249, 249);
+  transition: all .1s;
+}
+.loginForm__inputContainer > input {
+  width: 100%;
+  height: 48px;
+  padding: 10px 10px;
+  color: rgb(249, 249, 249);
+  font-size: 15px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1.53;
+  background-color: rgb(49, 52, 62);
+  border: none;
+  border-radius: 5px;
+}
+.loginForm__inputContainer > span {
+  display: block;
+  width: 100%;
+  margin-top: 3px;
+  text-align: right;
+  color: red;
+}
+.loginForm__inputContainer > input:focus-visible{
+  outline: none;
+  color: rgb(249, 249, 249);
+  border: 1px solid rgba(249, 249, 249, .3);
+}
+.loginForm__input:focus-visible + .loginForm__label, .loginForm__input:not(:placeholder-shown) + .loginForm__label {
+  top: 0;
+  transform: translateY(calc(-100% - 5px));
+}
+
+.loginForm__inputContainer--invalid > input {
+  border: 1px solid red;
+}
+
+.loginForm__buttonContainer{
+  width: 100%;
+  height: 48px;
+  margin-top: 25px;
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.loginForm__buttonContainer .loginForm_btnBg {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  top: 0;
+  left: -100%;
+  z-index: 0;
+  background: linear-gradient(82deg, rgb(225, 5, 74), rgb(206, 65, 0)) repeat scroll 0% 0%;
+  transition: all .3s ease-out;
+}
+.loginForm__buttonContainer > button {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+  color: white;
+  background: transparent;
+  border: none;
+}
+
+.loginForm__statusMsg {
+  color: green;
+}
+.loginForm__statusMsg.loginForm__statusMsg--error {
+  color: red;
+}
+
+.loginForm__buttonContainer:hover > button {
+  cursor: pointer;
+}
+.loginForm__buttonContainer:hover .loginForm_btnBg {
+  transform: translateX(50%);
+}

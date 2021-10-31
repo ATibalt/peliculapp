@@ -1,0 +1,116 @@
+.header {
+  padding: 30px 1.3rem 0 1.3rem;
+  column-gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+.header .header__info {
+  display: flex;
+  column-gap: 1.3rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.header .header__posterCont {
+  position: relative;
+  width: min(40vw, 300px);
+  border-radius: 4px;
+  overflow: hidden;
+  background: linear-gradient(307deg, #898989, #343434);
+  background-size: 400% 400%;
+  display: flex;
+  justify-content: center;
+  align-self: flex-start;
+
+  -webkit-animation: SkeletonLoad 30s ease infinite;
+  -moz-animation: SkeletonLoad 30s ease infinite;
+  animation: SkeletonLoad 30s ease infinite;
+}
+.header__posterCont .header__aux {
+  padding-top: calc(100% * 1.5);
+}
+.header__posterCont  img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+.header__bio {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  align-items: flex-start;
+  max-width: max-content;
+}
+.header__bio > span {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.header__bio > p {
+  margin: 0;
+  overflow: hidden;
+  color: #898989;
+}
+.header__bio > button {
+  background: red;
+  border: none;
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: black;
+}
+.header__bio > button:hover {
+  cursor: pointer;
+}
+
+.header__bio--hide {
+  max-width: 500px;
+}
+
+.header__bio--hide > p{
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+@-webkit-keyframes SkeletonLoad {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@-moz-keyframes SkeletonLoad {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+@keyframes SkeletonLoad {
+  0%{background-position:0% 2%}
+  50%{background-position:100% 99%}
+  100%{background-position:0% 2%}
+}
+
+@media only screen and (min-width: 1280px) {
+  .header{
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .header{
+    padding: 75px 1.3rem 0 1.3rem;
+    margin-bottom: 0;
+  }
+  .header .header__posterCont {
+    align-self: flex-end;
+  }
+  .header__bio > button {
+    background: none;
+    border: none;
+    padding: 0;
+    font-weight: bold;
+    color: #898989;
+  }
+}

@@ -1,0 +1,61 @@
+.header__contentTitle {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-grow: 1;
+  position: relative;
+  max-width: 400px;
+}
+
+.header__info .header__contentTitle > * {
+  margin-top: 10px;
+}
+
+.header__contentTitle > span:first-child {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.header__contentTitle .header__data {
+  color: #898989;
+}
+
+.actions {
+  color: white;
+}
+.actions__add .actions__button {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  margin-top: 10px;
+  background-color: rgb(64, 68, 82);
+  color: rgb(137, 144, 172);
+  border: none;
+  border-radius: 4px;
+  padding: .6rem;
+}
+.actions__add .actions__button > span {
+  font-size: .8em;
+  font-weight: bold;
+}
+.actions__add .actions__button:hover, .actions__add .actions__button--active {
+  color: white;
+  background-color: rgb(137, 144, 172);;
+}
+
+.actions__add .actions__button--error, .actions__add .actions__button--error:hover {
+  background: rgb(255, 92, 92);
+  color: white;
+  pointer-events: none;
+}
+
+.actions__add .actions__button:hover {
+  cursor: pointer;
+}
+
+.actions__add.actions__add--disabled > .actions__button {
+  display: none;
+}
+
