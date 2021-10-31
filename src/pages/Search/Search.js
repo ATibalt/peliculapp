@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   movieList: [],
   tvList: [],
   peopleList: [],
-  type: '',
+  type: 'movie',
   display: [],
   searchPage: 1,
   totalPages: undefined,
@@ -32,17 +32,86 @@ function contentReducer(state, action) {
   switch (action.type) {
     case 'SET_MOVIES': {
       const movies = action.payload;
-      const newArray = deleteDuplicated([...state.movieList, ...movies]);
+      const newArray = [...movies];
+      if (state.type === 'movie') {
+        return {
+          ...state,
+          hasError: false,
+          message: '',
+          movieList: newArray,
+          display: newArray
+        };
+      }
       return { ...state, hasError: false, message: '', movieList: newArray };
     }
     case 'SET_TV': {
       const tv = action.payload;
-      const newArray = deleteDuplicated([...state.tvList, ...tv]);
+      const newArray = [...tv];
+      if (state.type === 'tv') {
+        return {
+          ...state,
+          hasError: false,
+          message: '',
+          tvList: newArray,
+          display: newArray
+        };
+      }
       return { ...state, hasError: false, message: '', tvList: newArray };
     }
     case 'SET_PEOPLE': {
       const people = action.payload;
+      const newArray = [...people];
+      if (state.type === 'people') {
+        return {
+          ...state,
+          hasError: false,
+          message: '',
+          peopleList: newArray,
+          display: newArray
+        };
+      }
+      return { ...state, hasError: false, message: '', peopleList: newArray };
+    }
+    case 'UPDATE_MOVIES': {
+      const movies = action.payload;
+      const newArray = deleteDuplicated([...state.movieList, ...movies]);
+      if (state.type === 'movie') {
+        return {
+          ...state,
+          hasError: false,
+          message: '',
+          movieList: newArray,
+          display: newArray
+        };
+      }
+      return { ...state, hasError: false, message: '', movieList: newArray };
+    }
+    case 'UPDATE_TV': {
+      const tv = action.payload;
+      const newArray = deleteDuplicated([...state.tvList, ...tv]);
+      if (state.type === 'tv') {
+        return {
+          ...state,
+          hasError: false,
+          message: '',
+          tvList: newArray,
+          display: newArray
+        };
+      }
+      return { ...state, hasError: false, message: '', tvList: newArray };
+    }
+    case 'UPDATE_PEOPLE': {
+      const people = action.payload;
       const newArray = deleteDuplicated([...state.peopleList, ...people]);
+      if (state.type === 'people') {
+        return {
+          ...state,
+          hasError: false,
+          message: '',
+          peopleList: newArray,
+          display: newArray
+        };
+      }
       return { ...state, hasError: false, message: '', peopleList: newArray };
     }
     case 'SET_DISPLAY': {
@@ -55,17 +124,6 @@ function contentReducer(state, action) {
         newDisplay = state.peopleList;
       }
       return { ...state, display: newDisplay, type: action.payload };
-    }
-    case 'UPDATE_DISPLAY': {
-      let newDisplay = [];
-      if (state.type === 'movie') {
-        newDisplay = state.movieList;
-      } else if (state.type === 'tv') {
-        newDisplay = state.tvList;
-      } else if (state.type === 'people') {
-        newDisplay = state.peopleList;
-      }
-      return { ...state, display: newDisplay };
     }
     case 'SET_TOTAL_PAGES': {
       return { ...state, totalPages: action.payload };
@@ -151,7 +209,7 @@ const Search = () => {
               type: 'SET_ERROR',
               payload: response.message
             });
-          } else {
+          } else if (searchPage === 1) {
             searchDispatch({
               type: 'SET_MOVIES',
               payload: response.searchResults.movies
@@ -168,8 +226,21 @@ const Search = () => {
               type: 'SET_TOTAL_PAGES',
               payload: response.totalPages
             });
-            setShowBadges(true);
+          } else {
+            searchDispatch({
+              type: 'UPDATE_MOVIES',
+              payload: response.searchResults.movies
+            });
+            searchDispatch({
+              type: 'UPDATE_TV',
+              payload: response.searchResults.tv
+            });
+            searchDispatch({
+              type: 'UPDATE_PEOPLE',
+              payload: response.searchResults.people
+            });
           }
+          setShowBadges(true);
         });
       } else {
         setShowBadges(false);
@@ -183,6 +254,7 @@ const Search = () => {
 
   const searchInputHandler = (event) => {
     setSearchInput(event.target.value);
+    searchDispatch({ type: 'SET_PAGE', payload: 1 });
   };
 
   const notFoundMsg =
@@ -192,7 +264,7 @@ const Search = () => {
 
   const showSearchHandler = (event) => {
     switch (event.target.name) {
-      case 'movies':
+      case 'movie':
         searchDispatch({
           type: 'SET_DISPLAY',
           payload: 'movie'
@@ -240,10 +312,10 @@ const Search = () => {
             <button
               type="button"
               className={`${styles.search__filtersClass} ${
-                type === 'movies' ? styles['search__filtersClass--active'] : ''
+                type === 'movie' ? styles['search__filtersClass--active'] : ''
               }`}
               onClick={showSearchHandler}
-              name="movies"
+              name="movie"
             >
               <span>Películas</span>
               {showBadges && (

@@ -1,4 +1,4 @@
-const API_KEY = '400e955fa8d38809ec388750cf3162a1';
+const API_KEY = process.env.REACT_APP_MOVIEDB_API_KEY;
 const LANGUAGE_ES = 'es-MX';
 
 export const fetchPopularTV = async () => {
