@@ -16,3 +16,5 @@ El frontend fue desplegado en el servicio de hosting provisto por Firebase, mien
 La app se encuentra disponible en la siguiente URL:
 
 https://atibalt-peliculapp.web.app/home
+
+Aviso: si usted quisiera ingresar al sitio como usuario y no se siente seguro dejando sus datos reales puede utilizar credenciales falsas, el sistema actualmente no cuenta con un feature de comprobación de las mismas. De cualquier manera, cualquier contraseña que ingrese será encriptada y su legibilidad es imposible una vez almacenada en la BBDD.
